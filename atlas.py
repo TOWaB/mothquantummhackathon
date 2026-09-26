@@ -44,6 +44,17 @@ MAX_EDGE = 1024  # Telablur's own pixel-budget cap; no point uploading bigger
 # by this same timeout).
 HTTP_TIMEOUT = 30
 
+# That same incident recurred live tonight (26-09-2026, twice in ten minutes)
+# despite HTTP_TIMEOUT above — because it only bounds each individual poll
+# request, not the polling loop itself. A job Atlas leaves at status:running
+# forever (never erroring, never timing out any single request) made
+# wait_for_job's `while True` spin forever right along with it, wedging
+# _active_spin_id and returning 409 spin_in_progress to every visitor with
+# no recovery short of restarting the process by hand. A real job never
+# legitimately runs anywhere near this long (typical: 3-10s) — 180s is a
+# generous, clearly-a-hang bound, not a tight one.
+MAX_JOB_WAIT = 180
+
 # Credits/run per engine, from docs/atlas-api-docs-reference (§ engine catalog).
 # Used only to annotate the log with running spend — not fetched live, Atlas
 # has no live balance endpoint.
@@ -155,6 +166,14 @@ def wait_for_job(job_id: str, poll_interval=2.0, engine: str | None = None):
                 "error": st.get("error"),
             })
             return st, elapsed
+        elapsed = time.time() - t0
+        if elapsed > MAX_JOB_WAIT:
+            log_event({
+                "type": "complete", "engine": engine, "job_id": job_id,
+                "status": "timeout", "elapsed_s": round(elapsed, 1),
+                "error": f"still {st['status']} after {MAX_JOB_WAIT}s, giving up",
+            })
+            raise RuntimeError(f"{engine or 'job'} {job_id} timed out after {MAX_JOB_WAIT}s (still {st['status']})")
         time.sleep(poll_interval)
 
 
