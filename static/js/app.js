@@ -10,7 +10,6 @@
 // line has run throws a real ReferenceError (not just "undefined") — this
 // crashed the whole script on load until reordered. See LEARNINGS.md.
 const els = {
-  resetBtn: document.getElementById("resetBtn"),
   autoSpinBtn: document.getElementById("autoSpinBtn"),
   spinBtn: document.getElementById("spinBtn"),
   stageLine: document.getElementById("stage-line"),
@@ -574,11 +573,6 @@ els.introToggle.addEventListener("click", () => {
   try {
     localStorage.setItem("introCollapsed", collapsed ? "1" : "0");
   } catch (e) { /* private mode / blocked storage — the choice just won't persist */ }
-});
-
-els.resetBtn.addEventListener("click", async () => {
-  await fetch("/reset", { method: "POST" });
-  location.reload();
 });
 
 els.spinBtn.addEventListener("click", async () => {

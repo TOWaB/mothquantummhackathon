@@ -70,7 +70,7 @@ button:disabled{opacity:.4;cursor:default}
           calc(14px + env(safe-area-inset-bottom,0px))}
 
 /* --- 1 topbar -------------------------------------------------------- */
-#topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+#topbar{display:flex;align-items:center;gap:14px;
   flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:9px}
 #topbar h1{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
 .byline{

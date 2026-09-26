@@ -48,7 +48,6 @@ The right column is checkable in `api_log.jsonl`. The left is not checkable at a
 | Engine line | Side picked by four `coin-toss-v1` flips, picture from `telablur-v1`. `backend aer · mode emu` |
 | Stage tip | Drag to turn. Click a face to bring it round. |
 | Panel heads | Facing you · The coin flips · Atlas log |
-| Reset | Start again |
 
 ### The five states
 
