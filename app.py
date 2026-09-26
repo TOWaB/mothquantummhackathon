@@ -94,7 +94,11 @@ def load_faces() -> dict:
     for n, s in served.get("current", {}).items():
         faces[int(n)] = s
     for n, info in faces.items():
-        src = FACES_SRC / f"face{n:02d}.png"
+        # The clean starting state is the plain, unedited subject photo —
+        # not the pre-blended telablur bake 16_dodecahedron_faces.py also
+        # wrote to faceNN.png. A visitor's first press is the first time
+        # this face's photo is ever actually altered.
+        src = FACES_SRC / f"face{n:02d}_subject.png"
         dest = STATIC_FACES / f"face{n:02d}.jpg"
         # Migration from the pre-JPEG static/faces layout: a faceNN.png
         # already sitting here is whatever was actually being served before
@@ -499,7 +503,9 @@ def reset():
     floors.save_floors({str(n): 0.0 for n in range(1, 13)})
     versions.reset_to_manifest()
     for n in range(1, 13):
-        src = FACES_SRC / f"face{n:02d}.png"
+        # Reset to the plain, unedited subject photo — see load_faces()'s
+        # matching comment.
+        src = FACES_SRC / f"face{n:02d}_subject.png"
         if src.exists():
             image = Image.open(src).convert("RGB")
             image.save(STATIC_FACES / f"face{n:02d}.jpg", "JPEG", quality=85)

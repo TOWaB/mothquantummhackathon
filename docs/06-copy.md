@@ -88,7 +88,7 @@ Every number in the last two rows comes from the run that just happened.
 
 | API value | On screen |
 |---|---|
-| `original` | made in the overnight batch |
+| `original` | the photograph on its own, nothing mixed in yet |
 | `reroll` | run again with new settings, same two photos |
 | `reblend` | run again with the same settings, blending onto the last result |
 

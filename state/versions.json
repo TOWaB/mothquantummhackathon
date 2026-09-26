@@ -14,7 +14,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face01_v1.jpg",
-      "mask_file": null
+      "mask_file": "face01_v1_mask.png"
     }
   ],
   "2": [
@@ -32,7 +32,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face02_v1.jpg",
-      "mask_file": null
+      "mask_file": "face02_v1_mask.png"
     }
   ],
   "3": [
@@ -50,7 +50,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face03_v1.jpg",
-      "mask_file": null
+      "mask_file": "face03_v1_mask.png"
     }
   ],
   "4": [
@@ -68,7 +68,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face04_v1.jpg",
-      "mask_file": null
+      "mask_file": "face04_v1_mask.png"
     }
   ],
   "5": [
@@ -86,7 +86,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face05_v1.jpg",
-      "mask_file": null
+      "mask_file": "face05_v1_mask.png"
     }
   ],
   "6": [
@@ -104,7 +104,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face06_v1.jpg",
-      "mask_file": null
+      "mask_file": "face06_v1_mask.png"
     }
   ],
   "7": [
@@ -122,7 +122,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face07_v1.jpg",
-      "mask_file": null
+      "mask_file": "face07_v1_mask.png"
     }
   ],
   "8": [
@@ -140,7 +140,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face08_v1.jpg",
-      "mask_file": null
+      "mask_file": "face08_v1_mask.png"
     }
   ],
   "9": [
@@ -158,7 +158,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face09_v1.jpg",
-      "mask_file": null
+      "mask_file": "face09_v1_mask.png"
     }
   ],
   "10": [
@@ -176,7 +176,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face10_v1.jpg",
-      "mask_file": null
+      "mask_file": "face10_v1_mask.png"
     }
   ],
   "11": [
@@ -194,7 +194,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face11_v1.jpg",
-      "mask_file": null
+      "mask_file": "face11_v1_mask.png"
     }
   ],
   "12": [
@@ -212,7 +212,7 @@
       "floor": 0.0,
       "ts": null,
       "file": "face12_v1.jpg",
-      "mask_file": null
+      "mask_file": "face12_v1_mask.png"
     }
   ]
 }

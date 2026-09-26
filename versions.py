@@ -11,6 +11,8 @@ from pathlib import Path
 
 VERSIONS_PATH = Path("state/versions.json")
 MANIFEST_PATH = Path("out/16_dodecahedron_faces/manifest.json")
+OUT_DIR = Path("out/16_dodecahedron_faces")
+STATIC_FACES = Path("static/faces")
 
 
 def seed_from_manifest() -> dict:
@@ -19,7 +21,23 @@ def seed_from_manifest() -> dict:
         for entry in json.loads(MANIFEST_PATH.read_text()):
             if entry.get("status") != "completed":
                 continue
-            faces.setdefault(str(entry["face"]), []).append({
+            n = entry["face"]
+            # The baked distance_gradient mask (radius=30, floor=0) that
+            # 16_dodecahedron_faces.py already wrote — byte-identical to
+            # mask.make_mask(alpha, radius=30, floor=0.0), confirmed in
+            # docs/findings.md M0.1. Copied into static/faces here (not just
+            # referenced) so it survives a reset the same way every other
+            # version's mask does — this used to be a separate one-shot
+            # script (17_backfill_v1_masks.py) whose result a reset would
+            # silently wipe from versions.json, since seed_from_manifest is
+            # exactly what a reset re-runs.
+            mask_src = OUT_DIR / f"face{n:02d}_mask.png"
+            mask_file = None
+            if mask_src.exists():
+                mask_file = f"face{n:02d}_v1_mask.png"
+                STATIC_FACES.mkdir(parents=True, exist_ok=True)
+                (STATIC_FACES / mask_file).write_bytes(mask_src.read_bytes())
+            faces.setdefault(str(n), []).append({
                 "v": 1,
                 "method": "original",
                 "job_id": entry["job_id"],
@@ -27,8 +45,8 @@ def seed_from_manifest() -> dict:
                 "params": entry["params"],
                 "floor": 0.0,
                 "ts": None,
-                "file": f"face{entry['face']:02d}_v1.jpg",
-                "mask_file": None,  # set by 17_backfill_v1_masks.py
+                "file": f"face{n:02d}_v1.jpg",
+                "mask_file": mask_file,
             })
     save_versions(faces)
     return faces
