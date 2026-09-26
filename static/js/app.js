@@ -22,14 +22,16 @@ const els = {
   facename: document.getElementById("facename"),
   faceversion: document.getElementById("faceversion"),
   facesub: document.getElementById("facesub"),
+  facecredit: document.getElementById("facecredit"),
   facerows: document.getElementById("facerows"),
   vlist: document.getElementById("vlist"),
   maskToggle: document.getElementById("maskToggle"),
   floorstrip: document.getElementById("floorstrip"),
+  intro: document.getElementById("intro"),
+  introToggle: document.getElementById("introToggle"),
   cFlips: document.getElementById("c-flips"),
   cVersions: document.getElementById("c-versions"),
   cSpins: document.getElementById("c-spins"),
-  cCredits: document.getElementById("c-credits"),
 };
 
 const METHOD = {
@@ -39,8 +41,10 @@ const METHOD = {
 };
 
 const ROWS = [
-  ["First photo", "subject", (p, face) => `Face ${face}`],
-  ["Second photo", "opposite", (p, face) => `Face ${(latestState && latestState.face_pairing[face]) ?? "?"}`],
+  ["First photo", "subject", (p, face) => `Face ${face}`, false,
+    (p, face) => photographer(latestState?.face_photos?.[face]?.subject)],
+  ["Second photo", "opposite", (p, face) => `Face ${(latestState && latestState.face_pairing[face]) ?? "?"}`, false,
+    (p, face) => photographer(latestState?.face_photos?.[face]?.opposite)],
   ["How much mixing", "strength", p => p.params.strength],
   ["Which way it mixes", "direction", p => p.params.direction],
   ["How wide it spreads", "mask_radius", p => p.params.mask_radius],
@@ -48,7 +52,29 @@ const ROWS = [
   ["Took", "elapsed_s", p => (p.elapsed_s != null ? p.elapsed_s + "s" : "—")],
 ];
 
-let counters = { flips: 0, versions: 0, spins: 0, credits: 0 };
+// docs/TASKS-final-ui.md §1: filename prefix identifies the photographer.
+// subject/opposite are face-level constants (same pair every version, see
+// app.py's _face_photos), so this only ever needs latestState.face_photos.
+function photographer(filename) {
+  if (!filename) return null;
+  if (filename.startsWith("2V0")) return "Cristina Tănase";
+  if (filename.startsWith("H66")) return "Petrică Tănase";
+  return null;
+}
+
+function creditLine(face) {
+  const photos = latestState && latestState.face_photos && latestState.face_photos[face];
+  if (!photos) return "";
+  const a = photographer(photos.subject);
+  const b = photographer(photos.opposite);
+  const names = a && b && a !== b
+    ? "Petrică Tănase and Cristina Tănase"
+    : (a || b);
+  if (!names) return "";
+  return `${names} · George Enescu International Festival, 2023`;
+}
+
+let counters = { flips: 0, versions: 0, spins: 0 };
 let currentFace = 1;
 let latestState = null; // last GET /state response, refreshed after every spin_result
 let pickingFace = false;
@@ -58,6 +84,7 @@ let currentDrawEl = null;
 let spinClockTimer = null;
 let spinClockStart = 0;
 let frontFace = 1; // whatever face is actually fronting, including at construction
+let currentDrawBits = []; // this draw's bits so far, to detect a live "thrown away" (docs/TASKS-site-copy.md §3)
 const floorFills = {};
 const floorCells = {};
 
@@ -75,7 +102,8 @@ function bumpCounters() {
   els.cFlips.textContent = counters.flips;
   els.cVersions.textContent = counters.versions;
   els.cSpins.textContent = counters.spins;
-  els.cCredits.textContent = counters.credits;
+  // docs/TASKS-site-copy.md §3: that counter is gone from the screen
+  // entirely now, five becomes four — no display element for it anymore.
 }
 
 function logRow(ev) {
@@ -94,7 +122,7 @@ function describe(ev) {
     case "spin_start":
       return `spin_id ${ev.spin_id}`;
     case "submit":
-      return `${ev.engine} · ${ev.job_id.slice(0, 8)} · ${JSON.stringify(ev.params)} · ${ev.credits} credit${ev.credits === 1 ? "" : "s"}`;
+      return `${ev.engine} · ${ev.job_id.slice(0, 8)} · ${JSON.stringify(ev.params)} · ${ev.credits}cr`;
     case "complete":
       return `${ev.engine || ""} · ${ev.job_id.slice(0, 8)} · ${ev.status} · ${ev.elapsed_s}s`;
     case "quantum_bit":
@@ -154,20 +182,26 @@ function landRung(ev) {
   }
 }
 
+function addDsum(el, bits, idx, accepted, face) {
+  const dsum = document.createElement("div");
+  dsum.className = "dsum";
+  const bitsStr = bits.join(" ");
+  dsum.innerHTML = accepted
+    ? `<span class="bits">${bitsStr}</span> is ${idx}. Counting from zero, that is <span class="good">side ${face}</span>.`
+    : `<span class="bits">${bitsStr}</span> is ${idx}. Only 12 sides, so it goes and we draw again.`;
+  el.appendChild(dsum);
+}
+
+// The authoritative, retroactive pass (server's own bits, at spin_face_picked)
+// — idempotent, skips any draw that already got its explanation live (see
+// addDsum's live call site in the quantum_bit case below), so this only
+// fills in a gap if the live path somehow missed one, never duplicates it.
 function finalizeDraws(bits, face) {
   const draws = els.ladder.querySelectorAll(".draw");
   bits.forEach((draw, i) => {
     const el = draws[i];
-    if (!el) return;
-    const dsum = document.createElement("div");
-    dsum.className = "dsum";
-    const bitsStr = draw.bits.join(" ");
-    if (draw.accepted) {
-      dsum.innerHTML = `<span class="bits">${bitsStr}</span> is ${draw.idx}. Counting from zero, that is <span class="good">side ${face}</span>.`;
-    } else {
-      dsum.innerHTML = `<span class="bits">${bitsStr}</span> is ${draw.idx}. Only 12 sides, so it goes and we draw again.`;
-    }
-    el.appendChild(dsum);
+    if (!el || el.querySelector(".dsum")) return;
+    addDsum(el, draw.bits, draw.idx, draw.accepted, face);
   });
 }
 
@@ -190,12 +224,31 @@ function stopClock() {
 }
 
 const ERROR_COPY = {
-  job_failed: ["That flip did not come back. Trying again.", "Never a stack trace on a wall."],
-  credits: ["Out of credits for today.", "The sides on screen are the ones already made."],
-  unreachable: ["Cannot reach Atlas. Showing the sides made earlier.", "The object keeps working from the baked faces."],
+  // docs/TASKS-site-copy.md §3's three untested states. Nothing has failed
+  // in 473 jobs, so none of this has ever actually rendered. The new spec
+  // only names these three (an out-of-balance state existed in the old
+  // 06-copy.md doc but isn't in this one) — that backend `kind` now falls
+  // through to job_failed's generic text below rather than inventing
+  // unspecified wording of my own.
+  job_failed: ["That flip did not come back. Trying again.", ""],
+  unreachable: ["Cannot reach Atlas. Showing the sides as they were.", ""],
 };
 
 /* ---- face panel ------------------------------------------------------ */
+function renderEmptyFacePanel() {
+  // docs/TASKS-site-copy.md §3: a fresh install / before the overnight
+  // bake has landed shouldn't show zeroes and a blank image.
+  els.facename.textContent = "";
+  els.faceversion.textContent = "";
+  els.facesub.textContent = "Twelve sides, made before anyone arrived. Press the button to change one.";
+  els.faceimg.removeAttribute("src");
+  els.faceimg.alt = "";
+  if (els.facecredit) els.facecredit.textContent = "";
+  els.facerows.innerHTML = "";
+  els.vlist.innerHTML = "";
+  if (els.maskToggle) els.maskToggle.hidden = true;
+}
+
 function renderFacePanel(face, versionEntry, versionList) {
   currentFace = face;
   const v = versionEntry;
@@ -205,6 +258,7 @@ function renderFacePanel(face, versionEntry, versionList) {
   els.facesub.textContent = METHOD[v.method] || v.method;
   els.faceimg.src = `/static/faces/${v.file}`;
   els.faceimg.alt = `Side ${face}, version ${v.v}`;
+  if (els.facecredit) els.facecredit.textContent = creditLine(face);
 
   // M3.5: past versions can show the mask that made them, on demand — a
   // toggle, not a second permanent image, since #faceimg only ever holds
@@ -224,12 +278,19 @@ function renderFacePanel(face, versionEntry, versionList) {
   }
 
   els.facerows.innerHTML = "";
-  ROWS.forEach(([label, field, get, isCode]) => {
+  ROWS.forEach(([label, field, get, isCode, getCredit]) => {
     const row = document.createElement("div");
     row.className = "r";
     const value = get(v, face);
     row.innerHTML = `<span class="k">${label}<em>${field}</em></span><span class="v${isCode ? " c" : ""}"></span>`;
-    row.querySelector(".v").textContent = value;
+    const vEl = row.querySelector(".v");
+    vEl.appendChild(document.createTextNode(String(value)));
+    const credit = getCredit ? getCredit(v, face) : null;
+    if (credit) {
+      const em = document.createElement("em");
+      em.textContent = `original image: ${credit}`;
+      vEl.appendChild(em);
+    }
     els.facerows.appendChild(row);
   });
 
@@ -253,6 +314,7 @@ async function refreshFacePanel(face) {
   latestState = await r.json();
   const versionList = latestState.versions[String(face)] || [];
   if (versionList.length) renderFacePanel(face, versionList[versionList.length - 1], versionList);
+  else renderEmptyFacePanel();
   return versionList.length;
 }
 
@@ -266,6 +328,7 @@ function onFaceSelected(face) {
   if (!latestState) return;
   const versionList = latestState.versions[String(face)] || [];
   if (versionList.length) renderFacePanel(face, versionList[versionList.length - 1], versionList);
+  else renderEmptyFacePanel();
 }
 
 /* ---- floor strip under the solid (docs/mask-tasks M5) ----------------- */
@@ -311,28 +374,51 @@ function renderEvent(ev) {
       // preview, ladder, result — is about one specific face; ambient
       // drift has no business competing with it while it's in progress.
       dodeca.setAutoSpin(false);
-      setStatus("Flipping.", "Four flips pick the side, about 3.6 seconds each.", "");
+      currentDrawBits = [];
+      setStatus("Working out which side you get.", "Four flips decide which one. About 3.6 seconds each.", "");
       break;
     case "submit":
-      counters.credits += ev.credits || 0;
-      bumpCounters();
-      break;
+      break; // no counter tracks this anymore — docs/TASKS-site-copy.md §3
     case "quantum_bit":
       counters.flips++;
       bumpCounters();
       if (pickingFace) {
         landRung(ev);
-        setStatus(`Flipping. Flip ${rungInDraw === 0 ? 4 : rungInDraw} of 4.`, `came back ${ev.result.output}, 2 credits`, "");
+        setStatus(`Working out which side you get. Flip ${rungInDraw === 0 ? 4 : rungInDraw} of 4.`, `came back ${ev.result.output}`, "");
+        currentDrawBits.push(ev.result.output === "heads" ? 1 : 0);
+        if (currentDrawBits.length === 4) {
+          const bits = currentDrawBits;
+          const idx = bits[0] * 8 + bits[1] * 4 + bits[2] * 2 + bits[3];
+          currentDrawBits = [];
+          if (idx > 11) {
+            // Live, not retroactive: this is what was missing — a rejection
+            // used to only get explained once the whole spin finished
+            // (finalizeDraws, all at once), so watching it happen live gave
+            // no reason for why another "go" was starting. Now it writes
+            // straight into the ladder, which stays on screen (unlike the
+            // status line, which the next draw's own flips overwrite within
+            // a few seconds).
+            addDsum(currentDrawEl, bits, idx, false, null);
+            setStatus(`That is ${idx}. Only 12 sides, so it goes and we draw again.`, "", "");
+          }
+        }
       }
       break;
     case "spin_face_picked": {
       pickingFace = false;
+      // The picked face needs to show up where you're actually looking,
+      // immediately — not just in the status text. Turn the solid to it
+      // and show its current data in the panel now, before the mask
+      // preview and the real photo each arrive later and replace it.
+      dodeca.snapTo(ev.face);
+      onFaceSelected(ev.face);
       finalizeDraws(ev.bits, ev.face);
       const flips = ev.bits.reduce((n, d) => n + d.bits.length, 0);
       const discarded = ev.bits.filter(d => !d.accepted).length;
+      const discardedWord = discarded === 0 ? "none" : discarded === 1 ? "one" : discarded;
       setStatus(
-        `Side <span class="hl">${ev.face}</span>. Mixing the two photos now, about 7 seconds.`,
-        `${flips} flips, ${flips * 2} credits, ${discarded === 0 ? "none" : discarded} go${discarded === 1 ? "" : "es"} thrown away.`,
+        `Side <span class="hl">${ev.face}</span> is yours. Making the new version now.`,
+        `${flips} flips, ${discardedWord} go${discarded === 1 ? "" : "es"} thrown away.`,
         ""
       );
       break;
@@ -358,13 +444,13 @@ function renderEvent(ev) {
       counters.spins++;
       counters.versions++; // a press always rebakes now — see LEARNINGS.md M1
       bumpCounters();
-      const imageUrl = `/static/faces/face${String(ev.face).padStart(2, "0")}.png?v=${ev.job_id}`;
+      const imageUrl = `/static/faces/face${String(ev.face).padStart(2, "0")}.jpg?v=${ev.job_id}`;
       dodeca.setFaceImage(ev.face, imageUrl);
       dodeca.snapTo(ev.face);
       refreshFacePanel(ev.face).then(versionCount => {
         setStatus(
-          `Side <span class="hl">${ev.face}</span>, version ${versionCount}.`,
-          `Picture took ${ev.elapsed_s != null ? ev.elapsed_s + "s" : "—"}${ev.elapsed_s != null ? " and cost 1 credit" : ""}. Job ${ev.job_id.slice(0, 8)}.`,
+          `Side <span class="hl">${ev.face}</span> has changed. Version ${versionCount}, and nobody knew it would be side ${ev.face}.`,
+          `It stays that way for whoever comes next. Took ${ev.elapsed_s != null ? ev.elapsed_s + "s" : "—"}, job ${ev.job_id.slice(0, 8)}.`,
           ""
         );
       });
@@ -396,6 +482,7 @@ async function hydrate() {
   // naturally fronted at construction (frontFace) is what we show.
   const versionList = latestState.versions[String(frontFace)] || [];
   if (versionList.length) renderFacePanel(frontFace, versionList[versionList.length - 1], versionList);
+  else renderEmptyFacePanel();
   Object.keys(latestState.versions).forEach(n => {
     const list = latestState.versions[n];
     if (list.length) dodeca.setFaceImage(parseInt(n, 10), `/static/faces/${list[list.length - 1].file}`);
@@ -409,11 +496,7 @@ async function hydrate() {
   }
   setFrontCell(frontFace);
 
-  if (counters.spins === 0) {
-    setStatus("Ready. Press spin.", "Twelve sides, made last night. Press spin to make a thirteenth.", "");
-  } else {
-    setStatus("Ready. Press spin.", "Four flips pick the side, about 3.6 seconds each.", "");
-  }
+  setStatus("Press the button and one side changes.", "Four flips decide which one. About 3.6 seconds each.", "");
 
   const logR = await fetch("/api/log?since=0");
   const logData = await logR.json();
@@ -440,6 +523,7 @@ function connectStream() {
       bumpCounters();
       const versionList = latestState.versions[String(frontFace)] || [];
       if (versionList.length) renderFacePanel(frontFace, versionList[versionList.length - 1], versionList);
+      else renderEmptyFacePanel();
       for (let n = 1; n <= 12; n++) {
         const list = latestState.versions[String(n)] || [];
         setFloorFill(n, list.length ? (list[list.length - 1].floor ?? 0) : 0);
@@ -460,6 +544,28 @@ updateAutoSpinBtn();
 // result — poll the button label back in sync on the next tick after either.
 setInterval(updateAutoSpinBtn, 1000);
 
+/* ---- intro toggle (docs/TASKS-site-copy.md §2) ------------------------ */
+function setIntroCollapsed(collapsed) {
+  els.intro.classList.toggle("collapsed", collapsed);
+  els.introToggle.textContent = collapsed ? "What is this" : "Hide";
+  els.introToggle.setAttribute("aria-expanded", String(!collapsed));
+}
+(function initIntro() {
+  let stored = null;
+  try {
+    stored = localStorage.getItem("introCollapsed");
+  } catch (e) { /* private mode / blocked storage — fall through to the default */ }
+  const collapsed = stored !== null ? stored === "1" : window.innerWidth < 760;
+  setIntroCollapsed(collapsed);
+})();
+els.introToggle.addEventListener("click", () => {
+  const collapsed = !els.intro.classList.contains("collapsed");
+  setIntroCollapsed(collapsed);
+  try {
+    localStorage.setItem("introCollapsed", collapsed ? "1" : "0");
+  } catch (e) { /* private mode / blocked storage — the choice just won't persist */ }
+});
+
 els.resetBtn.addEventListener("click", async () => {
   await fetch("/reset", { method: "POST" });
   location.reload();
@@ -474,7 +580,7 @@ els.spinBtn.addEventListener("click", async () => {
     // queue — one shared object, everyone watches the same one live).
     // Stays disabled: the in-flight spin's own spin_result/spin_error,
     // which every connected browser receives via /stream, re-enables it.
-    setStatus("Already spinning it. Watching the same one.", "Press spin again once it lands.", "");
+    setStatus("Someone is changing a side right now. You are next.", "", "");
     return;
   }
   // everything from here plays out live via /stream's renderEvent

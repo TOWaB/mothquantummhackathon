@@ -27,7 +27,7 @@ def seed_from_manifest() -> dict:
                 "params": entry["params"],
                 "floor": 0.0,
                 "ts": None,
-                "file": f"face{entry['face']:02d}_v1.png",
+                "file": f"face{entry['face']:02d}_v1.jpg",
                 "mask_file": None,  # set by 17_backfill_v1_masks.py
             })
     save_versions(faces)

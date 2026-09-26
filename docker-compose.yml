@@ -3,9 +3,8 @@ services:
     build: .
     container_name: mothquantum-app
     restart: unless-stopped
-    environment:
-      - MOTH_API_KEY=${MOTH_API_KEY}
-      - MOTH_API_BASE=${MOTH_API_BASE:-https://api.mothquantum.com/api/v1}
+    env_file:
+      - .env
     ports:
       - "127.0.0.1:5406:5001"
     volumes:

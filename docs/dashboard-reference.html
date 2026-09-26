@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The numbers, Quantum Dodecahedron</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fff;--ink:#141414;--signal:#f0f22e;--circuit:#4634e0;
+  --slate:#6a696d;--steel:#7b7d86;--mist:#d3d6d8;--track:#f0f0f1;
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root:not([data-theme="light"]){color-scheme:light}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Inter Tight",system-ui,-apple-system,Arial,sans-serif;
+  font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--steel)}
+.wrap{max-width:1180px;margin:0 auto;padding:18px clamp(12px,2.4vw,24px) 60px}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  border-bottom:2px solid var(--ink);padding-bottom:9px}
+.byline{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:21px;letter-spacing:-.01em}
+h1{margin:12px 0 5px;font-size:clamp(21px,2.8vw,30px);font-weight:700;letter-spacing:-.03em}
+.lede{margin:0 0 4px;max-width:70ch;font-size:13.5px;color:var(--slate)}
+
+.modes{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 4px;align-items:center}
+.modes button{font-family:"Inter Tight";font-size:12px;font-weight:500;background:var(--paper);
+  color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:5px 13px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.modes button:focus-visible{outline:2px solid var(--circuit);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:11px;margin-top:12px}
+.p{border:1px solid var(--mist);border-radius:10px;padding:12px 13px;min-width:0}
+.p > .kicker{display:block;margin-bottom:2px}
+.p h2{margin:0 0 2px;font-size:14px;font-weight:600;letter-spacing:-.01em}
+.p .cap{margin:0 0 10px;font-size:11.5px;color:var(--slate);max-width:60ch}
+.w12{grid-column:span 12}.w8{grid-column:span 8}.w6{grid-column:span 6}.w4{grid-column:span 4}
+@media(max-width:900px){.w8,.w6,.w4{grid-column:span 12}}
+
+svg{display:block;width:100%;height:auto;overflow:visible}
+.big{font-size:clamp(30px,4.4vw,46px);font-weight:700;letter-spacing:-.03em;line-height:1}
+.big.sig{background:linear-gradient(transparent 62%,var(--signal) 62%);display:inline}
+.unit{font-size:12px;color:var(--slate);margin-top:5px}
+.pair{display:flex;gap:22px;flex-wrap:wrap}
+.pair div b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+.pair div span{display:block;font-size:11.5px;color:var(--slate);margin-top:2px}
+.dark{background:var(--ink);border-color:var(--ink);color:#c9c9c9}
+.dark h2{color:#fff}.dark .cap{color:#9a9a9a}
+.dark .big{color:var(--signal)}.dark .unit{color:#9a9a9a}
+.warn{border-color:var(--circuit)}
+.warn .note{margin:9px 0 0;font-size:11.5px;color:var(--circuit);border-top:1px solid var(--mist);padding-top:8px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--steel);font-weight:400;padding:0 0 5px}
+td{padding:5px 0;border-top:1px solid var(--mist)}
+td.n{text-align:right;font-family:"JetBrains Mono",monospace;font-size:11px}
+td.c{color:var(--circuit);font-family:"JetBrains Mono",monospace;font-size:10.5px}
+footer{margin-top:26px;border-top:1px solid var(--mist);padding-top:10px;display:flex;
+  justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <span class="byline">TheOneWithABeard</span>
+    <span class="kicker">Quantum Dodecahedron / the numbers</span>
+  </div>
+
+  <h1>What twelve photographs have been through.</h1>
+  <p class="lede">Every figure here is read from <code>api_log.jsonl</code>, <code>versions.json</code> and <code>floors.json</code>. Nothing is stored for this page and nothing is called to draw it.</p>
+
+  <div class="modes">
+    <span class="kicker">Showing</span>
+    <button data-m="now" aria-pressed="true">Now</button>
+    <button data-m="s02" aria-pressed="false">300 changes at step 0.02</button>
+    <button data-m="s08" aria-pressed="false">300 changes at step 0.08</button>
+    <span class="kicker" id="modenote"></span>
+  </div>
+
+  <div class="grid">
+
+    <!-- 1 -->
+    <div class="p w8" id="p1">
+      <span class="kicker">Panel 1</span>
+      <h2>How far each side has been eaten away</h2>
+      <p class="cap">The floor is the lowest the mask may go. At zero the musicians are fully protected. At one the whole frame blends.</p>
+      <svg id="floorNow" viewBox="0 0 760 190"></svg>
+    </div>
+
+    <!-- 2 -->
+    <div class="p w4 dark">
+      <span class="kicker" style="color:#8b8b8b">Panel 2</span>
+      <h2>Highest floor</h2>
+      <p class="cap">On any of the twelve.</p>
+      <span class="big" id="maxFloor">0.06</span>
+      <p class="unit" id="maxFloorSide">side 12, after 473 jobs</p>
+      <p class="unit" id="maxFloorPct" style="margin-top:12px">the musicians are still 94% protected there</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="p w8">
+      <span class="kicker">Panel 3</span>
+      <h2>Floor over time</h2>
+      <p class="cap">One line per side, drawn against change number rather than the clock. The side that has drifted furthest is picked out in solid ink.</p>
+      <svg id="floorTime" viewBox="0 0 760 230"></svg>
+    </div>
+
+    <!-- 4 -->
+    <div class="p w4">
+      <span class="kicker">Panel 4</span>
+      <h2>Where people looked</h2>
+      <p class="cap">Versions made per side. The sides the room favoured are the ones that erode.</p>
+      <svg id="versions" viewBox="0 0 340 230"></svg>
+    </div>
+
+    <!-- 5 -->
+    <div class="p w4">
+      <span class="kicker">Panel 5</span>
+      <h2>Heads against tails</h2>
+      <p class="cap">Across the 80-flip determinism run. Two independent runs, no repeats.</p>
+      <svg id="heads" viewBox="0 0 340 74"></svg>
+      <div class="pair" style="margin-top:12px">
+        <div><b>36</b><span>heads</span></div>
+        <div><b>44</b><span>tails</span></div>
+        <div><b>45%</b><span>heads rate</span></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="p w4">
+      <span class="kicker">Panel 6</span>
+      <h2>Draws thrown away</h2>
+      <p class="cap">Four flips make a number from 0 to 15. Anything over 11 cannot be a side, so it is discarded and drawn again.</p>
+      <span class="big sig" id="rejPct">25%</span>
+      <p class="unit" id="rejCount">of all draws discarded</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="p w4">
+      <span class="kicker">Panel 7</span>
+      <h2>Seconds waited</h2>
+      <p class="cap">Measured here, not returned by Atlas.</p>
+      <div class="pair">
+        <div><b>3.6s</b><span>coin-toss-v1, p50</span></div>
+        <div><b>7.1s</b><span>telablur-v1, p50</span></div>
+      </div>
+      <div class="pair" style="margin-top:12px">
+        <div><b>473</b><span>jobs run</span></div>
+        <div><b>100%</b><span>completed</span></div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="p w12" id="p8">
+      <span class="kicker">Panel 8</span>
+      <h2>Every side, as it stands</h2>
+      <p class="cap">The last version of each, what made it, and the floor it was baked at.</p>
+      <table>
+        <thead><tr><th>Side</th><th>Versions</th><th>Last method</th><th>Strength</th><th>Radius</th><th class="n">Floor</th><th class="n">Protected</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="kicker">Quantum Dodecahedron · the numbers</span>
+    <span class="kicker">backend aer · mode emu</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+
+/* real state, 26 Sep */
+var NOW=[0.0,0.02,0.02,0.0,0.02,0.02,0.0,0.02,0.02,0.02,0.0,0.06];
+var VERS_NOW=[5,1,1,1,2,1,1,3,1,1,1,4];
+var LAST_NOW=[
+ ["reroll",0.2,60],["original",0.1,30],["original",0.1,30],["original",0.1,30],
+ ["reblend",0.3,45],["original",0.1,30],["original",0.1,30],["reblend",0.3,45],
+ ["original",0.1,30],["original",0.1,30],["original",0.1,30],["reblend",0.3,45]];
+
+var seed=20260926;
+function rnd(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;}
+function reflect(x){if(x<0)x=-x;if(x>1)x=2-x;return x;}
+
+/* simulate N changes, uniform over 12 sides, reflecting walk per side */
+function sim(n,step){
+  seed=20260926;
+  var f=NOW.slice(), v=VERS_NOW.slice();
+  var hist=[]; for(var i=0;i<12;i++)hist.push([{x:0,y:f[i]}]);
+  for(var k=1;k<=n;k++){
+    var s=Math.floor(rnd()*12);
+    f[s]=reflect(f[s]+(rnd()<0.5?-step:step));
+    v[s]++;
+    hist[s].push({x:k,y:f[s]});
+  }
+  return {floors:f,versions:v,hist:hist,n:n};
+}
+var DATA={
+  now:{floors:NOW,versions:VERS_NOW,hist:null,n:0},
+  s02:sim(300,0.02),
+  s08:sim(300,0.08)
+};
+DATA.now.hist=(function(){
+  var h=[];for(var i=0;i<12;i++){h.push([{x:0,y:0},{x:VERS_NOW[i],y:NOW[i]}]);}
+  return h;})();
+DATA.now.n=VERS_NOW.reduce(function(a,b){return a+b;},0);
+
+var mode="now";
+
+/* panel 1 */
+function drawFloors(f){
+  var s=document.getElementById("floorNow"); s.innerHTML="";
+  var W=760,H=190,pad=26,bw=(W-pad)/12;
+  s.appendChild(el("line",{x1:0,y1:H-26,x2:W,y2:H-26,stroke:"#d3d6d8"}));
+  s.appendChild(el("line",{x1:0,y1:8,x2:W,y2:8,stroke:"#d3d6d8","stroke-dasharray":"3 4"}));
+  var t=el("text",{x:2,y:5,"font-family":"JetBrains Mono","font-size":9,fill:"#7b7d86"});
+  t.textContent="1.0 fully blended"; s.appendChild(t);
+  f.forEach(function(v,i){
+    var x=i*bw+4, h=Math.max(1.5,v*(H-40));
+    s.appendChild(el("rect",{x:x,y:H-26-h,width:bw-9,height:h,fill:"#141414",rx:2}));
+    var n=el("text",{x:x+(bw-9)/2,y:H-13,"text-anchor":"middle",
+      "font-family":"JetBrains Mono","font-size":10,fill:"#7b7d86"});
+    n.textContent=String(i+1).padStart(2,"0"); s.appendChild(n);
+    var val=el("text",{x:x+(bw-9)/2,y:H-32-h,"text-anchor":"middle",
+      "font-family":"JetBrains Mono","font-size":9.5,fill:"#4634e0"});
+    val.textContent=v.toFixed(2); s.appendChild(val);
+  });
+}
+
+/* panel 3 */
+function drawTime(d){
+  var s=document.getElementById("floorTime"); s.innerHTML="";
+  var W=760,H=230,pad=22,maxX=Math.max(1,d.n);
+  s.appendChild(el("line",{x1:0,y1:H-pad,x2:W,y2:H-pad,stroke:"#d3d6d8"}));
+  s.appendChild(el("line",{x1:0,y1:8,x2:W,y2:8,stroke:"#d3d6d8","stroke-dasharray":"3 4"}));
+  var hi=0,hiI=0;
+  d.floors.forEach(function(v,i){if(v>hi){hi=v;hiI=i;}});
+  d.hist.forEach(function(h,i){
+    var pts=h.map(function(p){
+      return (p.x/maxX*W).toFixed(1)+","+((H-pad)-p.y*(H-pad-10)).toFixed(1);}).join(" ");
+    s.appendChild(el("polyline",{points:pts,fill:"none",
+      stroke:i===hiI?"#141414":"rgba(20,20,20,.28)","stroke-width":i===hiI?2:1}));
+  });
+  var lab=el("text",{x:W-4,y:(H-pad)-hi*(H-pad-10)-6,"text-anchor":"end",
+    "font-family":"JetBrains Mono","font-size":10,fill:"#141414"});
+  lab.textContent="side "+String(hiI+1).padStart(2,"0")+"  "+hi.toFixed(2);
+  s.appendChild(lab);
+  var xl=el("text",{x:2,y:H-6,"font-family":"JetBrains Mono","font-size":9,fill:"#7b7d86"});
+  xl.textContent="change 0"; s.appendChild(xl);
+  var xr=el("text",{x:W-2,y:H-6,"text-anchor":"end","font-family":"JetBrains Mono","font-size":9,fill:"#7b7d86"});
+  xr.textContent="change "+d.n; s.appendChild(xr);
+}
+
+/* panel 4 */
+function drawVersions(v){
+  var s=document.getElementById("versions"); s.innerHTML="";
+  var W=340,H=230,rowH=(H-14)/12,max=Math.max.apply(null,v);
+  v.forEach(function(n,i){
+    var y=i*rowH+3, w=Math.max(2,n/max*(W-56));
+    s.appendChild(el("rect",{x:26,y:y,width:w,height:rowH-5,fill:"#141414",rx:2}));
+    var lab=el("text",{x:0,y:y+rowH-8,"font-family":"JetBrains Mono","font-size":9.5,fill:"#7b7d86"});
+    lab.textContent=String(i+1).padStart(2,"0"); s.appendChild(lab);
+    var val=el("text",{x:26+w+5,y:y+rowH-8,"font-family":"JetBrains Mono","font-size":9.5,fill:"#4634e0"});
+    val.textContent=n; s.appendChild(val);
+  });
+}
+
+/* panel 5 */
+(function(){
+  var s=document.getElementById("heads"),W=340,H=74;
+  var hp=36/80;
+  s.appendChild(el("rect",{x:0,y:16,width:W,height:26,fill:"#f0f0f1",rx:13}));
+  s.appendChild(el("rect",{x:0,y:16,width:W*hp,height:26,fill:"#141414",rx:13}));
+  var a=el("text",{x:8,y:34,"font-family":"JetBrains Mono","font-size":11,fill:"#fff"});
+  a.textContent="heads 36"; s.appendChild(a);
+  var b=el("text",{x:W-8,y:34,"text-anchor":"end","font-family":"JetBrains Mono","font-size":11,fill:"#6a696d"});
+  b.textContent="tails 44"; s.appendChild(b);
+  s.appendChild(el("line",{x1:W/2,y1:10,x2:W/2,y2:48,stroke:"#4634e0","stroke-width":1.4}));
+  var c=el("text",{x:W/2,y:62,"text-anchor":"middle","font-family":"JetBrains Mono","font-size":9.5,fill:"#4634e0"});
+  c.textContent="even would be here"; s.appendChild(c);
+})();
+
+/* panel 8 */
+function drawTable(d){
+  var tb=document.getElementById("tbody"); tb.innerHTML="";
+  for(var i=0;i<12;i++){
+    var tr=document.createElement("tr");
+    var last=LAST_NOW[i];
+    tr.innerHTML="<td>"+String(i+1).padStart(2,"0")+"</td>"+
+      "<td class='n'>"+d.versions[i]+"</td>"+
+      "<td>"+(d.versions[i]>VERS_NOW[i]?"reblend":last[0])+"</td>"+
+      "<td class='n'>"+last[1].toFixed(1)+"</td>"+
+      "<td class='n'>"+last[2]+"</td>"+
+      "<td class='n c'>"+d.floors[i].toFixed(3)+"</td>"+
+      "<td class='n'>"+Math.round((1-d.floors[i])*100)+"%</td>";
+    tb.appendChild(tr);
+  }
+}
+
+function paint(){
+  var d=DATA[mode];
+  drawFloors(d.floors); drawTime(d); drawVersions(d.versions); drawTable(d);
+  var hi=0,hiI=0; d.floors.forEach(function(v,i){if(v>hi){hi=v;hiI=i;}});
+  document.getElementById("maxFloor").textContent=hi.toFixed(2);
+  document.getElementById("maxFloorSide").textContent =
+    mode==="now" ? "side "+(hiI+1)+", after 473 jobs"
+                 : "side "+(hiI+1)+", after "+d.n+" changes";
+  document.getElementById("maxFloorPct").textContent =
+    "the musicians are still "+Math.round((1-hi)*100)+"% protected there";
+
+  var p1=document.getElementById("p1");
+  var old=p1.querySelector(".note"); if(old) old.remove();
+  p1.classList.toggle("warn", mode==="now");
+  if(mode==="now"){
+    var n=document.createElement("p"); n.className="note";
+    n.textContent="After a full day of building, the highest floor anywhere is 0.06. "+
+      "At the current step of 0.02 this panel will show a row of near-empty bars on Sunday. "+
+      "Compare the two projections above.";
+    p1.appendChild(n);
+  }
+  document.getElementById("modenote").textContent =
+    mode==="now" ? "real, read from floors.json"
+                 : "projected, reflecting walk, uniform over the twelve";
+}
+
+document.querySelectorAll("[data-m]").forEach(function(b){
+  b.onclick=function(){
+    mode=b.dataset.m;
+    document.querySelectorAll("[data-m]").forEach(function(x){
+      x.setAttribute("aria-pressed", x===b);});
+    paint();
+  };
+});
+paint();
+})();
+</script>
+</body>
+</html>

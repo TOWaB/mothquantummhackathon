@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The numbers — Quantum Dodecahedron</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Darker+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app data-app">
+
+  <header id="topbar">
+    <span class="byline">TheOneWithABeard</span>
+    <h1>Quantum Dodecahedron</h1>
+    <a id="backLink" class="ghost" href="/">the object</a>
+  </header>
+
+  <div class="dgrid">
+
+    <div class="card w8">
+      <span class="kicker">How far each side has been eaten away</span>
+      <p class="cap">The floor is the lowest the mask may go. At zero the musicians are fully protected. At one the whole frame blends.</p>
+      {{ svg_bars | safe }}
+    </div>
+
+    <div class="card w4 dark">
+      <span class="kicker" style="color:#8b8b8b">Highest floor</span>
+      <p class="cap">On any of the twelve.</p>
+      <span class="big">{{ "%.2f"|format(max_floor) }}</span>
+      <p class="unit">side {{ max_floor_side }}, after {{ jobs_run }} jobs</p>
+      <p class="unit" style="margin-top:12px">the musicians are still {{ protected_pct }}% protected there</p>
+    </div>
+
+    <div class="card w12">
+      <span class="kicker">Floor over time</span>
+      <p class="cap">One line per side, drawn against change number rather than the clock. The side that has drifted furthest is picked out in solid ink.</p>
+      {{ svg_time | safe }}
+    </div>
+
+    <div class="card w6">
+      <span class="kicker">What images changed</span>
+      <p class="cap">Versions made per side.</p>
+      {{ svg_versions | safe }}
+    </div>
+
+    <div class="card w6">
+      <span class="kicker">Draws thrown away</span>
+      <p class="cap">Four flips make a number from 0 to 15. Anything over 11 cannot be a side, so it is discarded and drawn again.</p>
+      <span class="big sig">{{ reject_pct }}%</span>
+      <p class="unit">of all draws discarded ({{ total_draws }} draws total)</p>
+    </div>
+
+    <div class="card w12">
+      <span class="kicker">Every side, as it stands</span>
+      <p class="cap">The last version of each, what made it, and the floor it was baked at.</p>
+      <table class="dtable">
+        <thead>
+          <tr>
+            <th>Side</th><th>Versions</th><th>Last method</th><th>Strength</th><th>Radius</th>
+            <th class="n">Floor</th><th class="n">Protected</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+          <tr>
+            <td>{{ r.side }}</td>
+            <td class="n">{{ r.versions }}</td>
+            <td>{{ r.method }}</td>
+            <td class="n">{{ r.strength }}</td>
+            <td class="n">{{ r.radius }}</td>
+            <td class="n c">{{ "%.3f"|format(r.floor) }}</td>
+            <td class="n">{{ r.protected }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer id="dfooter">
+    <span class="kicker">Quantum Dodecahedron &middot; the numbers</span>
+    <span class="kicker">backend aer &middot; mode emu</span>
+  </footer>
+</div>
+
+</body>
+</html>

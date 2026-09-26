@@ -93,6 +93,19 @@ The whole draw history including discards. This one record drives the ladder.
 ```
 `method` is `original`, `reroll` or `reblend`.
 
+### `spin_mask_ready`
+```json
+{"ts": "...", "type": "spin_mask_ready", "spin_id": "03f9d6a5", "face": 11,
+ "method": "reblend", "v": 2, "floor": 0.02, "mask_file": "face11_v2_mask.png"}
+```
+Fires once the mask is built and saved, before the `telablur-v1` job is
+submitted — this is what lets the screen show the mask (and its floor) live
+during the ~7s render wait, rather than only after `spin_result` lands.
+`v` is the version number this spin is about to create. `mask_file` is the
+ring-annotated preview under `static/faces/`, not the plain grayscale file
+actually uploaded to Atlas (see `docs/mask-tasks` — the ring would corrupt
+the real masking data, so two files exist and only this one is ever shown).
+
 ### `spin_result`
 ```json
 {"ts": "...", "type": "spin_result", "spin_id": "e93c1aac", "face": 8,

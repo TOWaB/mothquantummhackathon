@@ -13,56 +13,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face01_v1.png",
-      "mask_file": "face01_v1_mask.png"
-    },
-    {
-      "v": 2,
-      "method": "reroll",
-      "job_id": "2f49ac06-38a4-4090-a1a0-7129b4a5b0d8",
-      "elapsed_s": 7.3,
-      "params": {
-        "strength": 0.2,
-        "direction": "horizontal",
-        "mask_radius": 90,
-        "mask_type": "distance_gradient"
-      },
-      "floor": 0.02,
-      "ts": "2026-09-26T14:53:05.811100+00:00",
-      "file": "face01_v2.png",
-      "mask_file": "face01_v2_mask.png"
-    },
-    {
-      "v": 3,
-      "method": "reroll",
-      "job_id": "d93f255b-8b13-4d7e-aa75-ef7c4e027c63",
-      "elapsed_s": 7.1,
-      "params": {
-        "strength": 0.3,
-        "direction": "vertical",
-        "mask_radius": 60,
-        "mask_type": "distance_gradient"
-      },
-      "floor": 0.0,
-      "ts": "2026-09-26T14:57:37.080538+00:00",
-      "file": "face01_v3.png",
-      "mask_file": "face01_v3_mask.png"
-    },
-    {
-      "v": 4,
-      "method": "reblend",
-      "job_id": "c1fe1716-6bb4-4270-a383-a2c715a2e04c",
-      "elapsed_s": 7.4,
-      "params": {
-        "strength": 0.3,
-        "direction": "vertical",
-        "mask_radius": 60,
-        "mask_type": "distance_gradient"
-      },
-      "floor": 0.02,
-      "ts": "2026-09-26T15:03:26.669747+00:00",
-      "file": "face01_v4.png",
-      "mask_file": "face01_v4_mask.png"
+      "file": "face01_v1.jpg",
+      "mask_file": null
     }
   ],
   "2": [
@@ -79,8 +31,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face02_v1.png",
-      "mask_file": "face02_v1_mask.png"
+      "file": "face02_v1.jpg",
+      "mask_file": null
     }
   ],
   "3": [
@@ -97,39 +49,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face03_v1.png",
-      "mask_file": "face03_v1_mask.png"
-    },
-    {
-      "v": 2,
-      "method": "reblend",
-      "job_id": "fd14a88f-645b-4620-8226-dcf91d726651",
-      "elapsed_s": 7.1,
-      "params": {
-        "strength": 0.1,
-        "direction": "full",
-        "mask_radius": 30,
-        "mask_type": "distance_gradient"
-      },
-      "floor": 0.0,
-      "ts": "2026-09-26T13:44:53.472286+00:00",
-      "file": "face03_v2.png"
-    },
-    {
-      "v": 3,
-      "method": "reblend",
-      "job_id": "dcfc45fb-1caa-4111-95fa-f7129645d3e9",
-      "elapsed_s": 7.3,
-      "params": {
-        "strength": 0.1,
-        "direction": "full",
-        "mask_radius": 30,
-        "mask_type": "distance_gradient"
-      },
-      "floor": 0.02,
-      "ts": "2026-09-26T14:46:22.677858+00:00",
-      "file": "face03_v3.png",
-      "mask_file": "face03_v3_mask.png"
+      "file": "face03_v1.jpg",
+      "mask_file": null
     }
   ],
   "4": [
@@ -146,8 +67,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face04_v1.png",
-      "mask_file": "face04_v1_mask.png"
+      "file": "face04_v1.jpg",
+      "mask_file": null
     }
   ],
   "5": [
@@ -164,8 +85,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face05_v1.png",
-      "mask_file": "face05_v1_mask.png"
+      "file": "face05_v1.jpg",
+      "mask_file": null
     }
   ],
   "6": [
@@ -182,8 +103,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face06_v1.png",
-      "mask_file": "face06_v1_mask.png"
+      "file": "face06_v1.jpg",
+      "mask_file": null
     }
   ],
   "7": [
@@ -200,8 +121,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face07_v1.png",
-      "mask_file": "face07_v1_mask.png"
+      "file": "face07_v1.jpg",
+      "mask_file": null
     }
   ],
   "8": [
@@ -218,8 +139,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face08_v1.png",
-      "mask_file": "face08_v1_mask.png"
+      "file": "face08_v1.jpg",
+      "mask_file": null
     }
   ],
   "9": [
@@ -236,8 +157,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face09_v1.png",
-      "mask_file": "face09_v1_mask.png"
+      "file": "face09_v1.jpg",
+      "mask_file": null
     }
   ],
   "10": [
@@ -254,8 +175,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face10_v1.png",
-      "mask_file": "face10_v1_mask.png"
+      "file": "face10_v1.jpg",
+      "mask_file": null
     }
   ],
   "11": [
@@ -272,8 +193,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face11_v1.png",
-      "mask_file": "face11_v1_mask.png"
+      "file": "face11_v1.jpg",
+      "mask_file": null
     }
   ],
   "12": [
@@ -290,8 +211,8 @@
       },
       "floor": 0.0,
       "ts": null,
-      "file": "face12_v1.png",
-      "mask_file": "face12_v1_mask.png"
+      "file": "face12_v1.jpg",
+      "mask_file": null
     }
   ]
 }

@@ -16,10 +16,36 @@
 
   <!-- 1 topbar -->
   <header id="topbar">
-    <span class="brand"><i class="sq"></i> Visual Hive</span>
+    <span class="byline">TheOneWithABeard</span>
     <h1>Quantum Dodecahedron</h1>
     <button id="resetBtn">Start again</button>
   </header>
+
+  <!-- 2b intro -->
+  <section id="intro" open>
+    <p class="lede">Press the button and one of these twelve photographs changes for good.</p>
+
+    <p>The photographs are Petrică and Cristina Tănase's. They are married, and they
+    have shot the George Enescu International Festival in Bucharest together for more
+    than ten years, one behind each camera at the same concerts. They gave me six
+    frames each from 2023. Every side of this dodecahedron pairs one of his with one of hers,
+    and a quantum engine pushes the two into each other until you cannot say where one
+    ends. Two people who have spent a decade photographing the same rooms end up,
+    one press at a time, entangled in the same picture.</p>
+
+    <p>But I do not choose which side you get. Four coin flips on Moth's Atlas make a
+    number between zero and fifteen, and anything over eleven is thrown away and drawn
+    again, because there are only twelve sides. Eighty test flips came back with no
+    repeats and 45 percent heads.</p>
+
+    <p>The musicians are protected at first. A mask cut from each photograph holds them
+    out of the blend, but every change lifts that protection a fraction, so the players
+    are the last thing to go. Whatever you make stays for whoever comes next,
+    unless someone presses Start Again, which returns every side to the
+    twelve original prints.</p>
+
+    <button id="introToggle" aria-expanded="true" aria-controls="intro">Hide</button>
+  </section>
 
   <!-- 2 counters and engine line -->
   <div id="meta">
@@ -29,12 +55,11 @@
         <span><b>12</b>sides</span>
         <span><b id="c-versions">0</b>versions made</span>
         <span><b id="c-spins">0</b>spins</span>
-        <span><b id="c-credits">0</b>credits</span>
       </div>
-      <div id="claim">Every side here was chosen by a flip on Atlas, and every flip has a job id.</div>
+      <div id="claim">Every side is chosen by a flip nobody can predict. Eighty test flips, no repeats, 45 percent heads.</div>
     </div>
     <div id="engine-line">
-      Side picked by four <span class="m">coin-toss-v1</span> flips, picture from
+      Side picked by <span class="m">coin-toss-v1</span> flips, picture from
       <span class="m">telablur-v1</span>. <span class="m">backend aer &middot; mode emu</span>
     </div>
   </div>
@@ -55,9 +80,10 @@
 
     <!-- middle: facing you -->
     <div class="col">
-      <div class="card">
+      <div class="card" id="facingCard">
         <span class="kicker">Facing you</span>
         <img id="faceimg" alt="">
+        <p class="credit" id="facecredit"></p>
         <button id="maskToggle" class="ghost" hidden>Show mask</button>
 
         <div class="facehead">
@@ -78,10 +104,10 @@
     <!-- right: the wait, in the order it happens -->
     <div class="col colC">
       <div class="card">
-        <button class="primary" id="spinBtn">Spin it</button>
+        <button class="primary" id="spinBtn">Change a side</button>
         <div id="status">
-          <div id="stage-line">Ready. Press spin.</div>
-          <div id="poll-line">Four flips pick the side, about 3.6 seconds each.</div>
+          <div id="stage-line">Press the button and one side changes.</div>
+          <div id="poll-line">Four flips decide which one. About 3.6 seconds each.</div>
           <div id="clock-line"></div>
         </div>
       </div>
@@ -98,6 +124,8 @@
     </div>
 
   </div>
+
+  <footer id="mainfooter"><a id="dataLink" href="/data">the numbers</a></footer>
 </div>
 
 <script src="/static/js/dodeca.js"></script>

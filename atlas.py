@@ -10,6 +10,7 @@ has a single, complete, real-time record of every Atlas call this repo has
 ever made. This is the proof trail for the challenge claims, not decoration.
 """
 import json
+import mimetypes
 import os
 import threading
 import time
@@ -107,10 +108,11 @@ def resize_for_upload(src: Path, dest: Path) -> Path:
 
 def upload_asset(path: Path) -> str:
     data = path.read_bytes()
+    content_type = mimetypes.guess_type(path.name)[0] or "image/png"
     asset = requests.post(
         f"{API_BASE}/assets",
         headers=H,
-        json={"filename": path.name, "content_type": "image/png", "size_bytes": len(data)},
+        json={"filename": path.name, "content_type": content_type, "size_bytes": len(data)},
         timeout=HTTP_TIMEOUT,
     ).json()
     if "asset_id" not in asset:
