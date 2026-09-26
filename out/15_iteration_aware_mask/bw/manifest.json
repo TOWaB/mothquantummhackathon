@@ -1,0 +1,62 @@
+[
+  {
+    "state": 1,
+    "job_id": "2db6c908-91be-4703-803d-839e3446d25e",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "dilate_px": 15,
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 7.0,
+    "file": "out/15_iteration_aware_mask/bw/state_1.png"
+  },
+  {
+    "state": 2,
+    "job_id": "7ef83252-9840-42c5-b5d4-98ed85b39c38",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "dilate_px": 30,
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 7.0,
+    "file": "out/15_iteration_aware_mask/bw/state_2.png"
+  },
+  {
+    "state": 3,
+    "job_id": "f03a3cfe-7ecc-481b-a8ed-a4e565909496",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "dilate_px": 45,
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 7.3,
+    "file": "out/15_iteration_aware_mask/bw/state_3.png"
+  },
+  {
+    "state": 4,
+    "job_id": "798d4eae-e69f-4686-818c-dfd2df185411",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "dilate_px": 60,
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 7.2,
+    "file": "out/15_iteration_aware_mask/bw/state_4.png"
+  },
+  {
+    "state": 5,
+    "job_id": "70c3388c-b6e1-46a7-a86e-0ce9f718d007",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "dilate_px": 75,
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 6.9,
+    "file": "out/15_iteration_aware_mask/bw/state_5.png"
+  }
+]

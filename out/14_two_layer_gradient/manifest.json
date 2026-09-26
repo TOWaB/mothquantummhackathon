@@ -1,0 +1,24 @@
+[
+  {
+    "state": 1,
+    "job_id": "9a35125d-ece5-4357-82ec-36b699d2a8b7",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "image2": "H66A0009mab.jpg",
+    "elapsed_s": 9.6,
+    "file": "out/14_two_layer_gradient/state_1.png"
+  },
+  {
+    "state": 2,
+    "job_id": "502e8b72-3f86-4a97-b427-815484e88da9",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "image2": "H66A2008mab.jpg",
+    "elapsed_s": 6.9,
+    "file": "out/14_two_layer_gradient/state_2.png"
+  }
+]

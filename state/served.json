@@ -1,0 +1,92 @@
+{
+  "job_ids": [
+    "a76f3801-9b1f-4ed6-bd3b-de5dab1e62ad",
+    "b0ee88f8-9372-4e3a-99f7-405c5a434c89",
+    "394f17c1-1d99-4ab5-9603-8a28fa8c0cf0",
+    "fd14a88f-645b-4620-8226-dcf91d726651",
+    "485de39e-c1af-42cd-b20b-2bd3ec39e3c5",
+    "a92f4af0-c3da-4f0a-84c3-224730d0c6a3"
+  ],
+  "current": {
+    "2": {
+      "face": 2,
+      "subject": "H66A0009mab.jpg",
+      "opposite": "2V0A0604mab.jpg",
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "a76f3801-9b1f-4ed6-bd3b-de5dab1e62ad",
+      "file": "face02.png"
+    },
+    "3": {
+      "face": 3,
+      "subject": "2V0A1228mab.jpg",
+      "opposite": "H66A1678mab.jpg",
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "dcfc45fb-1caa-4111-95fa-f7129645d3e9",
+      "file": "face03.png",
+      "floor": 0.02
+    },
+    "12": {
+      "face": 12,
+      "subject": "H66A3243mab.jpg",
+      "opposite": "2V0A8428mab.jpg",
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "394f17c1-1d99-4ab5-9603-8a28fa8c0cf0",
+      "file": "face12.png"
+    },
+    "6": {
+      "face": 6,
+      "subject": "H66A1993mab.jpg",
+      "opposite": "2V0A6475mab.jpg",
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "485de39e-c1af-42cd-b20b-2bd3ec39e3c5",
+      "file": "face06.png"
+    },
+    "8": {
+      "face": 8,
+      "subject": "H66A2008mab.jpg",
+      "opposite": "2V0A7556mab.jpg",
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "a92f4af0-c3da-4f0a-84c3-224730d0c6a3",
+      "file": "face08.png"
+    },
+    "1": {
+      "face": 1,
+      "subject": "2V0A0604mab.jpg",
+      "opposite": "H66A0009mab.jpg",
+      "params": {
+        "strength": 0.3,
+        "direction": "vertical",
+        "mask_radius": 60,
+        "mask_type": "distance_gradient"
+      },
+      "job_id": "c1fe1716-6bb4-4270-a383-a2c715a2e04c",
+      "file": "face01.png",
+      "floor": 0.02
+    }
+  }
+}

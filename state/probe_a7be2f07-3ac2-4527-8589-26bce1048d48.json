@@ -1,0 +1,46 @@
+{
+  "job_id": "a7be2f07-3ac2-4527-8589-26bce1048d48",
+  "engine": "telablur-v1",
+  "params": {
+    "strength": 0.5
+  },
+  "input_images": [
+    "H66A0009mab.jpg",
+    "H66A0587mab.jpg"
+  ],
+  "asset_ids": {
+    "image1": "5ee321f9-ce1a-444b-b1c5-f40395b8b3df",
+    "image2": "ec26d945-bd20-4fcb-8732-1016c4a53260"
+  },
+  "elapsed_s": 9.5,
+  "status": "completed",
+  "output_file": "out/probe_a7be2f07-3ac2-4527-8589-26bce1048d48_result.png",
+  "storage_before": {
+    "$schema": "https://api.mothquantum.com/schemas/MeStorageOutputBody.json",
+    "usage": {
+      "upload_bytes": 0,
+      "output_bytes": 0,
+      "notebook_bytes": 0,
+      "total_bytes": 0
+    },
+    "quota": {
+      "upload_bytes": 1073741824,
+      "total_bytes": 10737418240,
+      "notebook_bytes": 2147483648
+    }
+  },
+  "storage_after": {
+    "$schema": "https://api.mothquantum.com/schemas/MeStorageOutputBody.json",
+    "usage": {
+      "upload_bytes": 1476732,
+      "output_bytes": 908330,
+      "notebook_bytes": 0,
+      "total_bytes": 2385062
+    },
+    "quota": {
+      "upload_bytes": 1073741824,
+      "total_bytes": 10737418240,
+      "notebook_bytes": 2147483648
+    }
+  }
+}

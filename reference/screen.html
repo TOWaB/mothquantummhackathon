@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reference screen, Quantum Dodecahedron</title>
+
+<!--
+  REFERENCE ONLY. No JavaScript, nothing moves, nothing calls Atlas.
+
+  What it is for
+    Open it next to the build and compare. Every id matches docs/05-screen-contract.md,
+    every token matches docs/07-design.md, every string matches docs/06-copy.md.
+    The solid is static but its markup nesting is exactly right, which is the part
+    that broke the first build.
+
+  What to lift
+    Everything between STYLE START and STYLE END goes into static/css/style.css.
+    The markup between MARKUP START and MARKUP END goes into templates/index.html.
+    The reference appendix at the bottom does not ship.
+
+  What to replace
+    .pclip background gradients  ->  url('/out/16_dodecahedron_faces/faceNN.png')
+    #faceimg src                 ->  the current version of the facing side
+    every number                 ->  read from api_log.jsonl
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- print pipeline blocks Google Fonts, use fontsource there:
+     @import url('https://cdn.jsdelivr.net/npm/@fontsource/inter-tight@5/600.css'); -->
+
+<style>
+/* ==================== STYLE START ==================== */
+
+/* --- tokens, docs/07-design.md --------------------------------------- */
+:root{
+  --paper:#ffffff;   /* background, always white            */
+  --ink:#141414;     /* text, the stage, rules              */
+  --signal:#f0f22e;  /* the one live thing. never text on white */
+  --circuit:#4634e0; /* job ids, elapsed, credits. nothing else */
+  --slate:#6a696d;   /* secondary text, data labels         */
+  --steel:#7b7d86;   /* kickers, API field names            */
+  --mist:#d3d6d8;    /* hairlines, borders                  */
+  --track:#f0f0f1;   /* bar tracks, inactive pills          */
+
+  --S:180px;         /* face box                            */
+  --R:117.81px;      /* inradius = 0.6545 x S               */
+  color-scheme:light;
+  box-sizing:border-box;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Inter Tight",system-ui,-apple-system,Arial,sans-serif;
+  font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+
+/* --- shared ---------------------------------------------------------- */
+.mono,code{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--steel)}
+.sq{width:9px;height:9px;background:var(--signal);outline:1px solid var(--ink);
+  display:inline-block;flex:0 0 auto}
+.card{border:1px solid var(--mist);border-radius:10px;padding:12px 13px;min-width:0}
+.card > .kicker{display:block;margin-bottom:8px}
+button{font-family:"Inter Tight";font-size:12px;font-weight:500;background:var(--paper);
+  color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:5px 13px;cursor:pointer}
+button.primary{background:var(--ink);color:#fff;font-size:15px;font-weight:600;
+  padding:11px 26px;width:100%}
+button:focus-visible{outline:2px solid var(--circuit);outline-offset:2px}
+
+/* --- shell ----------------------------------------------------------- */
+.app{min-height:100%;display:grid;grid-template-rows:auto auto 1fr;gap:11px;
+  max-width:1500px;margin:0 auto;
+  padding:calc(12px + env(safe-area-inset-top,0px)) clamp(12px,2vw,22px)
+          calc(14px + env(safe-area-inset-bottom,0px))}
+
+/* --- 1 topbar -------------------------------------------------------- */
+#topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:9px}
+#topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;
+  letter-spacing:-.01em}
+#topbar h1{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
+
+/* --- 2 counters and engine line -------------------------------------- */
+#meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+#counters{display:flex;flex-wrap:wrap}
+#counters > span{padding-right:13px;margin-right:13px;border-right:1px solid var(--mist);
+  font-size:12.5px;color:var(--slate)}
+#counters > span:last-child{border-right:0;margin-right:0;padding-right:0}
+#counters b{color:var(--ink);font-weight:600;font-size:16px;margin-right:4px}
+#claim{font-size:11.5px;color:var(--slate);margin-top:4px}
+#engine-line{font-size:12px;color:var(--slate)}
+#engine-line .m{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--circuit)}
+
+/* --- 3 columns ------------------------------------------------------- */
+.main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr) minmax(280px,.95fr);
+  gap:11px;min-height:0}
+.col{display:flex;flex-direction:column;gap:11px;min-width:0;min-height:0}
+@media(max-width:1180px){
+  .main{grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr)}
+  .colC{grid-column:1 / -1}}
+@media(max-width:760px){
+  .main{grid-template-columns:1fr}
+  .colC{grid-column:auto}}
+
+/* --- the solid ------------------------------------------------------- */
+/* THE RULE: .pface carries the 3D transform and NOTHING that groups it.
+   No clip-path, filter, opacity below 1, mask, overflow or mix-blend-mode.
+   Any of those drops it out of the 3D context and the solid paints flat.   */
+#stage{background:var(--ink);border-radius:10px;position:relative;overflow:hidden;
+  display:grid;place-items:center;perspective:720px;flex:1;min-height:320px;
+  touch-action:none;user-select:none;cursor:grab}
+#solid{width:var(--S);height:var(--S);position:relative;transform-style:preserve-3d;
+  transform:rotateX(-14deg) rotateY(24deg)}   /* JS replaces this with matrix3d() */
+.pface{position:absolute;inset:0;backface-visibility:hidden}
+.pclip{position:absolute;inset:0;
+  clip-path:polygon(50% 0%,97.55% 34.55%,79.39% 90.45%,20.61% 90.45%,2.45% 34.55%);
+  background:#0b0b0d center/cover no-repeat}
+.pclip .edge{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(255,255,255,.14),rgba(255,255,255,0) 24%),
+    radial-gradient(118% 118% at 50% 42%,rgba(0,0,0,0) 70%,rgba(0,0,0,.6) 100%)}
+.pclip .num{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;color:rgba(255,255,255,.85);
+  background:rgba(0,0,0,.6);padding:1px 6px;border-radius:99px}
+.pface.sel .pclip .edge{                     /* selection is an edge, never a wash */
+  background:linear-gradient(to bottom,rgba(240,242,46,.2),rgba(240,242,46,0) 30%),
+    radial-gradient(112% 112% at 50% 42%,rgba(0,0,0,0) 76%,var(--signal) 100%)}
+#stage .hud{position:absolute;right:11px;top:10px;display:flex;gap:6px;z-index:6}
+#stage .hud button{font-size:10.5px;padding:3px 9px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25)}
+#stage .tip{position:absolute;left:13px;bottom:11px;font-size:11.5px;
+  color:rgba(255,255,255,.45);z-index:6}
+#stage .axis{position:absolute;left:13px;top:11px;font-family:"JetBrains Mono",monospace;
+  font-size:9.5px;color:rgba(255,255,255,.38);z-index:6}
+
+/* --- facing you ------------------------------------------------------ */
+#faceimg{width:100%;border-radius:7px;display:block;border:1px solid var(--mist);
+  background:#000;aspect-ratio:3/2;object-fit:cover}
+.facehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:10px 0 2px}
+.facehead h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.facehead span{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--circuit)}
+.facesub{margin:0 0 8px;font-size:12px;color:var(--slate)}
+
+/* data row: plain label on top, API field name under it, value right */
+.r{display:grid;grid-template-columns:1fr auto;gap:10px;padding:5px 0;
+  border-bottom:1px solid var(--mist);font-size:12px;align-items:baseline}
+.r:last-child{border-bottom:0}
+.r .k{color:var(--slate)}
+.r .k em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;
+  font-size:9px;color:var(--steel)}
+.r .v{font-weight:600;font-size:11.5px;text-align:right;word-break:break-all}
+.r .v.c{color:var(--circuit);font-family:"JetBrains Mono",monospace;font-weight:400;font-size:10px}
+
+#versions{margin-top:10px;border-top:2px solid var(--ink);padding-top:8px}
+.vrow{display:grid;grid-template-columns:50px 1fr auto;gap:9px;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--mist);font-size:11.5px;cursor:pointer}
+.vrow:last-child{border-bottom:0}
+.vrow.now{background:linear-gradient(transparent 64%,var(--signal) 64%)}
+.vthumb{width:50px;height:34px;border-radius:3px;border:1px solid var(--mist)}
+.vmain b{font-weight:600}
+.vmain em{font-style:normal;display:block;font-family:"JetBrains Mono",monospace;
+  font-size:9.5px;color:var(--circuit)}
+.vtime{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--steel);
+  text-align:right;line-height:1.5}
+
+/* --- activity -------------------------------------------------------- */
+#status{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+#stage-line{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+#stage-line .hl{background:linear-gradient(transparent 58%,var(--signal) 58%)}
+#poll-line{font-size:11.5px;color:var(--slate)}
+#clock-line{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--steel)}
+
+.draw{margin-bottom:9px}
+.draw .dlab{font-size:11.5px;color:var(--slate);margin-bottom:4px}
+.rung{display:grid;grid-template-columns:44px 46px 20px 1fr;gap:8px;align-items:center;
+  padding:5px 0;border-bottom:1px solid var(--mist);font-size:11.5px}
+.rung .n{color:var(--steel);font-size:11px}
+.rung .o{font-weight:600}
+.rung .b{font-family:"JetBrains Mono",monospace;font-weight:500;text-align:center;
+  background:var(--track);border-radius:3px}
+.rung .b.one{background:var(--ink);color:#fff}
+.rung .j{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--circuit);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dsum{margin-top:6px;font-size:12px}
+.dsum .bits{font-family:"JetBrains Mono",monospace;letter-spacing:.28em;font-weight:500}
+.dsum .good{background:linear-gradient(transparent 58%,var(--signal) 58%);font-weight:600}
+
+.logcard{flex:1;min-height:150px;display:flex;flex-direction:column}
+#log{background:var(--ink);border-radius:6px;padding:9px 10px;flex:1;overflow:auto;
+  font-family:"JetBrains Mono",monospace;font-size:10px;line-height:1.65;color:#d8d8d8}
+#log .l{display:grid;grid-template-columns:52px 104px 1fr;gap:8px;padding:1px 0}
+#log .t{color:#7a7a7a}
+#log .ty{color:var(--signal)}
+#log .ty.sub{color:#9aa0ff}
+#log .ty.cmp{color:#8ad8b5}
+#log .d{color:#cbcbcb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ==================== STYLE END ==================== */
+
+
+/* reference appendix only, does not ship */
+.ref{max-width:1500px;margin:34px auto 60px;padding:0 clamp(12px,2vw,22px)}
+.ref h2{font-size:17px;font-weight:700;letter-spacing:-.02em;margin:0 0 3px;
+  border-top:2px solid var(--ink);padding-top:12px}
+.ref p.note{margin:0 0 14px;font-size:12.5px;color:var(--slate);max-width:72ch}
+.refgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:11px}
+.refbox{border:1px solid var(--mist);border-radius:10px;padding:11px 12px}
+.refbox > .kicker{display:block;margin-bottom:7px}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw div{width:62px}
+.sw i{display:block;height:34px;border-radius:5px;border:1px solid var(--mist)}
+.sw span{display:block;font-family:"JetBrains Mono",monospace;font-size:8.5px;
+  color:var(--steel);margin-top:3px;line-height:1.35}
+</style>
+</head>
+<body>
+
+<!-- ==================== MARKUP START ==================== -->
+<div class="app">
+
+  <!-- 1 topbar -->
+  <header id="topbar">
+    <span class="brand"><i class="sq"></i> Visual Hive</span>
+    <h1>Quantum Dodecahedron</h1>
+    <span style="display:flex;gap:7px">
+      <button id="speedBtn">Real time</button>
+      <button id="resetBtn">Start again</button>
+    </span>
+  </header>
+
+  <!-- 2 counters and engine line -->
+  <div id="meta">
+    <div>
+      <div id="counters">
+        <span><b id="c-flips">27</b>coin flips</span>
+        <span><b>12</b>sides</span>
+        <span><b id="c-versions">14</b>versions made</span>
+        <span><b id="c-spins">4</b>spins</span>
+        <span><b id="c-credits">68</b>credits</span>
+      </div>
+      <div id="claim">Every side here was chosen by a flip on Atlas, and every flip has a job id.</div>
+    </div>
+    <div id="engine-line">
+      Side picked by four <span class="m">coin-toss-v1</span> flips, picture from
+      <span class="m">telablur-v1</span>. <span class="m">backend aer · mode emu</span>
+    </div>
+  </div>
+
+  <!-- 3 the three columns -->
+  <div class="main">
+
+    <!-- left: the solid -->
+    <div class="col">
+      <div id="stage">
+        <div class="hud">
+          <button id="wireBtn">Wireframe</button>
+          <button id="homeBtn">Home</button>
+        </div>
+        <div class="axis" id="axisRead">front +0.31 −0.24 +0.92</div>
+        <div id="solid">
+          <!-- top ring: az 0, el 90, z 36 -->
+          <div class="pface" style="transform:rotateY(0deg)   rotateX(90deg)     translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#3a2510,#0e0806)"><span class="edge"></span><span class="num">01</span></div></div>
+          <!-- upper ring: az 36+72i, el 26.565, z 36 -->
+          <div class="pface" style="transform:rotateY(36deg)  rotateX(26.565deg) translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#16283f,#05090f)"><span class="edge"></span><span class="num">02</span></div></div>
+          <div class="pface" style="transform:rotateY(108deg) rotateX(26.565deg) translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#3a1826,#100609)"><span class="edge"></span><span class="num">03</span></div></div>
+          <div class="pface" style="transform:rotateY(180deg) rotateX(26.565deg) translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#1d3218,#070c06)"><span class="edge"></span><span class="num">04</span></div></div>
+          <div class="pface" style="transform:rotateY(252deg) rotateX(26.565deg) translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#443011,#120c04)"><span class="edge"></span><span class="num">05</span></div></div>
+          <div class="pface" style="transform:rotateY(324deg) rotateX(26.565deg) translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#22214a,#080816)"><span class="edge"></span><span class="num">06</span></div></div>
+          <!-- lower ring: az 72i, el −26.565, z 0 -->
+          <div class="pface sel" style="transform:rotateY(0deg)   rotateX(-26.565deg) translateZ(var(--R)) rotateZ(0deg)"><div class="pclip" style="background:linear-gradient(150deg,#4a2313,#140705)"><span class="edge"></span><span class="num">07</span></div></div>
+          <div class="pface" style="transform:rotateY(72deg)  rotateX(-26.565deg) translateZ(var(--R)) rotateZ(0deg)"><div class="pclip" style="background:linear-gradient(150deg,#123b36,#03100e)"><span class="edge"></span><span class="num">08</span></div></div>
+          <div class="pface" style="transform:rotateY(144deg) rotateX(-26.565deg) translateZ(var(--R)) rotateZ(0deg)"><div class="pclip" style="background:linear-gradient(150deg,#2d1a55,#0a0514)"><span class="edge"></span><span class="num">09</span></div></div>
+          <div class="pface" style="transform:rotateY(216deg) rotateX(-26.565deg) translateZ(var(--R)) rotateZ(0deg)"><div class="pclip" style="background:linear-gradient(150deg,#503c14,#140d03)"><span class="edge"></span><span class="num">10</span></div></div>
+          <div class="pface" style="transform:rotateY(288deg) rotateX(-26.565deg) translateZ(var(--R)) rotateZ(0deg)"><div class="pclip" style="background:linear-gradient(150deg,#123049,#030d16)"><span class="edge"></span><span class="num">11</span></div></div>
+          <!-- bottom: az 0, el −90, z 36 -->
+          <div class="pface" style="transform:rotateY(0deg)   rotateX(-90deg)     translateZ(var(--R)) rotateZ(36deg)"><div class="pclip" style="background:linear-gradient(150deg,#45141f,#130408)"><span class="edge"></span><span class="num">12</span></div></div>
+        </div>
+        <div class="tip">Drag to turn. Click a face to bring it round.</div>
+      </div>
+    </div>
+
+    <!-- middle: facing you -->
+    <div class="col">
+      <div class="card">
+        <span class="kicker">Facing you</span>
+        <!-- swap for /out/16_dodecahedron_faces/face08_v3.png -->
+        <img id="faceimg" alt="Side 8, version 3"
+             src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'%3E%3Cdefs%3E%3CradialGradient id='a'%3E%3Cstop offset='0%25' stop-color='%23ffd9a0' stop-opacity='.9'/%3E%3Cstop offset='50%25' stop-color='%23b3651f' stop-opacity='.4'/%3E%3Cstop offset='100%25' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='2.4'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='600' height='400' fill='%23120d0a'/%3E%3Cg filter='url(%23b)'%3E%3Cellipse cx='220' cy='150' rx='250' ry='200' fill='url(%23a)'/%3E%3Cg fill='%2307060a' opacity='.92'%3E%3Cpath d='M120 400 q0-110 46-134 q-21-30 6-49 q28-19 47 3 q19 21-4 47 q49 27 49 133z'/%3E%3Cpath d='M330 400 q2-97 41-121 q-18-27 4-44 q25-17 42 3 q16 19-4 42 q44 25 45 120z'/%3E%3C/g%3E%3C/g%3E%3Ctext x='16' y='384' fill='rgba(255,255,255,.4)' font-family='monospace' font-size='15'%3Eface08_v3.png%3C/text%3E%3C/svg%3E">
+
+        <div class="facehead">
+          <h2 id="facename">Side 8</h2>
+          <span id="faceversion">version 3 of 3</span>
+        </div>
+        <p class="facesub" id="facesub">reblend, run again with different settings</p>
+
+        <div class="rows" id="facerows">
+          <div class="r"><span class="k">First photo<em>subject</em></span><span class="v">H66A2008mab.jpg</span></div>
+          <div class="r"><span class="k">Second photo<em>opposite</em></span><span class="v">2V0A7556mab.jpg</span></div>
+          <div class="r"><span class="k">How much mixing<em>strength</em></span><span class="v">0.3</span></div>
+          <div class="r"><span class="k">Which way it mixes<em>direction</em></span><span class="v">vertical</span></div>
+          <div class="r"><span class="k">How wide it spreads<em>mask_radius</em></span><span class="v">45</span></div>
+          <div class="r"><span class="k">Job<em>job_id</em></span><span class="v c">f32b267e-8761-4640-b2c5-36eccc12b654</span></div>
+          <div class="r"><span class="k">Took<em>elapsed_s</em></span><span class="v">9.6s</span></div>
+        </div>
+
+        <div id="versions">
+          <span class="kicker">Every version of this side</span>
+          <div id="vlist" style="margin-top:5px">
+            <div class="vrow">
+              <span class="vthumb" style="background:linear-gradient(140deg,#4a2313,#140705)"></span>
+              <span class="vmain"><b>Version 1, original</b><em>a92f4af0-c3da-4f0a</em></span>
+              <span class="vtime">25 Sep 19:04<br>9.8s</span>
+            </div>
+            <div class="vrow">
+              <span class="vthumb" style="background:linear-gradient(140deg,#5a2d16,#160806)"></span>
+              <span class="vmain"><b>Version 2, reroll</b><em>a3177861-c0ed-49de</em></span>
+              <span class="vtime">25 Sep 22:11<br>9.5s</span>
+            </div>
+            <div class="vrow now">
+              <span class="vthumb" style="background:linear-gradient(140deg,#6b3a1c,#1a0a07)"></span>
+              <span class="vmain"><b>Version 3, reblend</b><em>f32b267e-8761-4640</em></span>
+              <span class="vtime">25 Sep 22:12<br>9.6s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: the wait, in the order it happens -->
+    <div class="col colC">
+      <div class="card">
+        <button class="primary" id="spinBtn">Spin it</button>
+        <div id="status">
+          <div id="stage-line">Side <span class="hl">8</span>, version 3.</div>
+          <div id="poll-line">Picture took 9.6s and cost 1 credit. Job f32b267e.</div>
+          <div id="clock-line">whole spin 57.8s</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="kicker">The coin flips</span>
+        <div id="ladder-rows">
+          <div class="draw">
+            <div class="dlab">First go</div>
+            <div class="rung"><span class="n">Flip 1</span><span class="o">heads</span><span class="b one">1</span><span class="j">3c8e775c · ibm 23454823045c4569</span></div>
+            <div class="rung"><span class="n">Flip 2</span><span class="o">heads</span><span class="b one">1</span><span class="j">b457f14d · ibm be16616c8b284267</span></div>
+            <div class="rung"><span class="n">Flip 3</span><span class="o">heads</span><span class="b one">1</span><span class="j">7beb4d4d · ibm 69086c02768f46ae</span></div>
+            <div class="rung"><span class="n">Flip 4</span><span class="o">heads</span><span class="b one">1</span><span class="j">0b518ac5 · ibm 0bc6e04e43da46d0</span></div>
+            <div class="dsum"><span class="bits">1 1 1 1</span> is 15. Only 12 sides, so it goes and we draw again.</div>
+          </div>
+          <div class="draw">
+            <div class="dlab">Second go</div>
+            <div class="rung"><span class="n">Flip 1</span><span class="o">tails</span><span class="b">0</span><span class="j">368cc507 · ibm 12e03b250100408c</span></div>
+            <div class="rung"><span class="n">Flip 2</span><span class="o">heads</span><span class="b one">1</span><span class="j">56b019ee · ibm f8f266dabbd245b0</span></div>
+            <div class="rung"><span class="n">Flip 3</span><span class="o">heads</span><span class="b one">1</span><span class="j">34f0b95a · ibm 97415261029e4510</span></div>
+            <div class="rung"><span class="n">Flip 4</span><span class="o">heads</span><span class="b one">1</span><span class="j">af0b1809 · ibm a5dab4e94a8b43d5</span></div>
+            <div class="dsum"><span class="bits">0 1 1 1</span> is 7. Counting from zero, that is <span class="good">side 8</span>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card logcard">
+        <span class="kicker">Atlas log</span>
+        <div id="log">
+          <div class="l"><span class="t">22:08:16</span><span class="ty">spin_start</span><span class="d">spin_id e93c1aac</span></div>
+          <div class="l"><span class="t">22:08:18</span><span class="ty sub">submit</span><span class="d">coin-toss-v1 · 3c8e775c · shots 1 · 2 credits</span></div>
+          <div class="l"><span class="t">22:08:21</span><span class="ty cmp">complete</span><span class="d">coin-toss-v1 · 3c8e775c · completed · 3.7s</span></div>
+          <div class="l"><span class="t">22:08:22</span><span class="ty">quantum_bit</span><span class="d">heads · ibm 23454823045c4569 · aer/emu</span></div>
+          <div class="l"><span class="t">22:08:23</span><span class="ty sub">submit</span><span class="d">coin-toss-v1 · b457f14d · shots 1 · 2 credits</span></div>
+          <div class="l"><span class="t">22:08:27</span><span class="ty cmp">complete</span><span class="d">coin-toss-v1 · b457f14d · completed · 3.5s</span></div>
+          <div class="l"><span class="t">22:08:28</span><span class="ty">quantum_bit</span><span class="d">heads · ibm be16616c8b284267 · aer/emu</span></div>
+          <div class="l"><span class="t">22:09:02</span><span class="ty">spin_face_picked</span><span class="d">idx 15 rejected, idx 7 accepted, face 8</span></div>
+          <div class="l"><span class="t">22:12:38</span><span class="ty sub">submit</span><span class="d">telablur-v1 · f32b267e · strength 0.3 · vertical · 1 credit</span></div>
+          <div class="l"><span class="t">22:12:48</span><span class="ty cmp">complete</span><span class="d">telablur-v1 · f32b267e · completed · 9.6s</span></div>
+          <div class="l"><span class="t">22:12:49</span><span class="ty">spin_result</span><span class="d">face 8 · reblend · version 3</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ==================== MARKUP END ==================== -->
+
+
+<!-- ============ reference appendix, does not ship ============ -->
+<div class="ref">
+  <h2>The five states of #status</h2>
+  <p class="note">Line one is the state, line two the detail of the moment, line three the clock. Every number comes from the run that just happened. Strings are fixed in docs/06-copy.md.</p>
+  <div class="refgrid">
+    <div class="refbox"><span class="kicker">Ready</span>
+      <div id="s1"><div style="font-size:15px;font-weight:600">Ready. Press spin.</div>
+      <div style="font-size:11.5px;color:var(--slate)">Four flips pick the side, about 3.6 seconds each.</div></div></div>
+    <div class="refbox"><span class="kicker">Flipping</span>
+      <div style="font-size:15px;font-weight:600">Flipping. Flip 2 of 4.</div>
+      <div style="font-size:11.5px;color:var(--slate)">came back heads, 2 credits</div>
+      <div class="mono" style="font-size:10.5px;color:var(--steel)">12.4s</div></div>
+    <div class="refbox"><span class="kicker">Thrown away</span>
+      <div style="font-size:15px;font-weight:600">That is 15. Only 12 sides, so it goes and we draw again.</div></div>
+    <div class="refbox"><span class="kicker">Picked</span>
+      <div style="font-size:15px;font-weight:600">Side <span class="hl" style="background:linear-gradient(transparent 58%,var(--signal) 58%)">8</span>. Mixing the two photos now, about 7 seconds.</div>
+      <div style="font-size:11.5px;color:var(--slate)">8 flips, 16 credits, one go thrown away.</div></div>
+    <div class="refbox"><span class="kicker">Done</span>
+      <div style="font-size:15px;font-weight:600">Side <span class="hl" style="background:linear-gradient(transparent 58%,var(--signal) 58%)">8</span>, version 4.</div>
+      <div style="font-size:11.5px;color:var(--slate)">Picture took 9.2s and cost 1 credit. Job f32b267e.</div></div>
+  </div>
+
+  <h2 style="margin-top:26px">The four states nobody has written yet</h2>
+  <p class="note">Nothing has failed in 29 jobs, so none of these has been tested. Suggested wording only. Task E3. A failure in front of a judge with no copy for it is worse than the failure.</p>
+  <div class="refgrid">
+    <div class="refbox"><span class="kicker">A flip fails</span>
+      <div style="font-size:15px;font-weight:600">That flip did not come back. Trying again.</div>
+      <div style="font-size:11.5px;color:var(--slate)">Never a stack trace on a wall.</div></div>
+    <div class="refbox"><span class="kicker">Credits gone</span>
+      <div style="font-size:15px;font-weight:600">Out of credits for today.</div>
+      <div style="font-size:11.5px;color:var(--slate)">The sides on screen are the ones already made.</div></div>
+    <div class="refbox"><span class="kicker">Atlas unreachable</span>
+      <div style="font-size:15px;font-weight:600">Cannot reach Atlas. Showing the sides made earlier.</div>
+      <div style="font-size:11.5px;color:var(--slate)">The object keeps working from the baked faces.</div></div>
+    <div class="refbox"><span class="kicker">Nothing spun yet</span>
+      <div style="font-size:15px;font-weight:600">Twelve sides, made last night. Press spin to make a thirteenth.</div>
+      <div style="font-size:11.5px;color:var(--slate)">An empty screen is an invitation, not a blank.</div></div>
+  </div>
+
+  <h2 style="margin-top:26px">Tokens</h2>
+  <p class="note">Yellow appears once per screen state, on the thing happening now. Violet carries job ids, elapsed times and credits, nothing else. #stage is ink, everything around it is paper, and there is no grey middle ground.</p>
+  <div class="sw">
+    <div><i style="background:#ffffff"></i><span>--paper<br>#ffffff</span></div>
+    <div><i style="background:#141414"></i><span>--ink<br>#141414</span></div>
+    <div><i style="background:#f0f22e"></i><span>--signal<br>#f0f22e</span></div>
+    <div><i style="background:#4634e0"></i><span>--circuit<br>#4634e0</span></div>
+    <div><i style="background:#6a696d"></i><span>--slate<br>#6a696d</span></div>
+    <div><i style="background:#7b7d86"></i><span>--steel<br>#7b7d86</span></div>
+    <div><i style="background:#d3d6d8"></i><span>--mist<br>#d3d6d8</span></div>
+    <div><i style="background:#f0f0f1"></i><span>--track<br>#f0f0f1</span></div>
+  </div>
+</div>
+
+</body>
+</html>

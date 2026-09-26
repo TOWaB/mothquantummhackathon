@@ -1,0 +1,297 @@
+{
+  "1": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "98ad6362-8aff-4b64-9797-4a06294c8a88",
+      "elapsed_s": 7.7,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face01_v1.png",
+      "mask_file": "face01_v1_mask.png"
+    },
+    {
+      "v": 2,
+      "method": "reroll",
+      "job_id": "2f49ac06-38a4-4090-a1a0-7129b4a5b0d8",
+      "elapsed_s": 7.3,
+      "params": {
+        "strength": 0.2,
+        "direction": "horizontal",
+        "mask_radius": 90,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.02,
+      "ts": "2026-09-26T14:53:05.811100+00:00",
+      "file": "face01_v2.png",
+      "mask_file": "face01_v2_mask.png"
+    },
+    {
+      "v": 3,
+      "method": "reroll",
+      "job_id": "d93f255b-8b13-4d7e-aa75-ef7c4e027c63",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.3,
+        "direction": "vertical",
+        "mask_radius": 60,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": "2026-09-26T14:57:37.080538+00:00",
+      "file": "face01_v3.png",
+      "mask_file": "face01_v3_mask.png"
+    },
+    {
+      "v": 4,
+      "method": "reblend",
+      "job_id": "c1fe1716-6bb4-4270-a383-a2c715a2e04c",
+      "elapsed_s": 7.4,
+      "params": {
+        "strength": 0.3,
+        "direction": "vertical",
+        "mask_radius": 60,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.02,
+      "ts": "2026-09-26T15:03:26.669747+00:00",
+      "file": "face01_v4.png",
+      "mask_file": "face01_v4_mask.png"
+    }
+  ],
+  "2": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "a76f3801-9b1f-4ed6-bd3b-de5dab1e62ad",
+      "elapsed_s": 7.2,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face02_v1.png",
+      "mask_file": "face02_v1_mask.png"
+    }
+  ],
+  "3": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "b0ee88f8-9372-4e3a-99f7-405c5a434c89",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face03_v1.png",
+      "mask_file": "face03_v1_mask.png"
+    },
+    {
+      "v": 2,
+      "method": "reblend",
+      "job_id": "fd14a88f-645b-4620-8226-dcf91d726651",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": "2026-09-26T13:44:53.472286+00:00",
+      "file": "face03_v2.png"
+    },
+    {
+      "v": 3,
+      "method": "reblend",
+      "job_id": "dcfc45fb-1caa-4111-95fa-f7129645d3e9",
+      "elapsed_s": 7.3,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.02,
+      "ts": "2026-09-26T14:46:22.677858+00:00",
+      "file": "face03_v3.png",
+      "mask_file": "face03_v3_mask.png"
+    }
+  ],
+  "4": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "3c03a27b-1a6a-4794-8e11-20be419b8e07",
+      "elapsed_s": 7.0,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face04_v1.png",
+      "mask_file": "face04_v1_mask.png"
+    }
+  ],
+  "5": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "f5cfb95e-7355-4e5c-84db-942f45f6ebfa",
+      "elapsed_s": 7.0,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face05_v1.png",
+      "mask_file": "face05_v1_mask.png"
+    }
+  ],
+  "6": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "485de39e-c1af-42cd-b20b-2bd3ec39e3c5",
+      "elapsed_s": 6.9,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face06_v1.png",
+      "mask_file": "face06_v1_mask.png"
+    }
+  ],
+  "7": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "0c4f9f44-7636-4a7a-8488-bd7d3d88118d",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face07_v1.png",
+      "mask_file": "face07_v1_mask.png"
+    }
+  ],
+  "8": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "a92f4af0-c3da-4f0a-84c3-224730d0c6a3",
+      "elapsed_s": 9.8,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face08_v1.png",
+      "mask_file": "face08_v1_mask.png"
+    }
+  ],
+  "9": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "b82e9209-7a1c-40d4-a4f9-6260b200c669",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face09_v1.png",
+      "mask_file": "face09_v1_mask.png"
+    }
+  ],
+  "10": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "700ff5dd-bf3e-4c11-bff8-22836cfac837",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face10_v1.png",
+      "mask_file": "face10_v1_mask.png"
+    }
+  ],
+  "11": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "9ec8e052-b3cf-4faa-b5f2-2be4122b879b",
+      "elapsed_s": 9.9,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face11_v1.png",
+      "mask_file": "face11_v1_mask.png"
+    }
+  ],
+  "12": [
+    {
+      "v": 1,
+      "method": "original",
+      "job_id": "394f17c1-1d99-4ab5-9603-8a28fa8c0cf0",
+      "elapsed_s": 7.1,
+      "params": {
+        "strength": 0.1,
+        "direction": "full",
+        "mask_radius": 30,
+        "mask_type": "distance_gradient"
+      },
+      "floor": 0.0,
+      "ts": null,
+      "file": "face12_v1.png",
+      "mask_file": "face12_v1_mask.png"
+    }
+  ]
+}

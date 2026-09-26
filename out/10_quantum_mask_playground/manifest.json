@@ -1,0 +1,282 @@
+[
+  {
+    "run": 1,
+    "recipe": "radial_from_center",
+    "params": {
+      "strength": 0.4,
+      "direction": "horizontal"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            1,
+            0,
+            1
+          ],
+          "idx": 5,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            1,
+            0
+          ],
+          "idx": 2,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "728ecc49-13cb-4cca-be91-22ea663fb92d",
+    "elapsed_s": 7.0,
+    "file": "out/10_quantum_mask_playground/run_01_result.png"
+  },
+  {
+    "run": 2,
+    "recipe": "stripes_horizontal",
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            1,
+            1,
+            1
+          ],
+          "idx": 7,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            0,
+            0
+          ],
+          "idx": 0,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "cf02eabc-84fd-4043-8130-3f9c5ce6d4b6",
+    "elapsed_s": 9.8,
+    "file": "out/10_quantum_mask_playground/run_02_result.png"
+  },
+  {
+    "run": 3,
+    "recipe": "stripes_horizontal",
+    "params": {
+      "strength": 0.9,
+      "direction": "vertical"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            1,
+            1,
+            1
+          ],
+          "idx": 7,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": false
+        },
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": false
+        },
+        {
+          "bits": [
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "d6fc4f8d-6515-42c3-a29f-c606c7ef0d87",
+    "elapsed_s": 9.8,
+    "file": "out/10_quantum_mask_playground/run_03_result.png"
+  },
+  {
+    "run": 4,
+    "recipe": "on_background_eaten",
+    "params": {
+      "strength": 0.4,
+      "direction": "vertical"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            1,
+            0,
+            0
+          ],
+          "idx": 4,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "d610f6ca-8bc2-41f5-958f-e03f4e9b60df",
+    "elapsed_s": 7.1,
+    "file": "out/10_quantum_mask_playground/run_04_result.png"
+  },
+  {
+    "run": 5,
+    "recipe": "radial_from_center",
+    "params": {
+      "strength": 0.9,
+      "direction": "vertical"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            1,
+            0,
+            1
+          ],
+          "idx": 5,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "ff27ea66-5872-4329-8d39-6e0557ce238a",
+    "elapsed_s": 7.1,
+    "file": "out/10_quantum_mask_playground/run_05_result.png"
+  },
+  {
+    "run": 6,
+    "recipe": "on_background",
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "quantum_log": {
+      "recipe": [
+        {
+          "bits": [
+            0,
+            0,
+            1
+          ],
+          "idx": 1,
+          "accepted": true
+        }
+      ],
+      "strength": [
+        {
+          "bits": [
+            1,
+            1
+          ],
+          "idx": 3,
+          "accepted": true
+        }
+      ],
+      "direction": [
+        {
+          "bits": [
+            0,
+            0
+          ],
+          "idx": 0,
+          "accepted": true
+        }
+      ]
+    },
+    "job_id": "3e15cd61-eeba-43ee-873d-ac2830b5f3f4",
+    "elapsed_s": 7.2,
+    "file": "out/10_quantum_mask_playground/run_06_result.png"
+  }
+]

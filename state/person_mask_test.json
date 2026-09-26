@@ -1,0 +1,14 @@
+[
+  {
+    "label": "effect-on-person",
+    "job_id": "e408dd32-2e18-4ab0-9944-ae748c6b31f7",
+    "elapsed_s": 7.3,
+    "file": "out/person_mask_effect-on-person_e408dd32-2e18-4ab0-9944-ae748c6b31f7.png"
+  },
+  {
+    "label": "effect-on-background",
+    "job_id": "6929d333-88a4-442c-9edb-29031723067f",
+    "elapsed_s": 7.2,
+    "file": "out/person_mask_effect-on-background_6929d333-88a4-442c-9edb-29031723067f.png"
+  }
+]

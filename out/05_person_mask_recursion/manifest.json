@@ -1,0 +1,57 @@
+[
+  {
+    "state": 1,
+    "job_id": "4ac9c7a5-9cf7-4987-b51b-939170e8209d",
+    "engine": "telablur-v1",
+    "params": {
+      "strength": 0.8
+    },
+    "image2_source": "H66A0009mab.jpg",
+    "elapsed_s": 7.1,
+    "file": "out/person_recursion/state_1.png"
+  },
+  {
+    "state": 2,
+    "job_id": "a4f67e5a-0f73-481d-a212-f5704ca5f205",
+    "engine": "telablur-v1",
+    "params": {
+      "strength": 0.8
+    },
+    "image2_source": "H66A0587mab.jpg",
+    "elapsed_s": 7.0,
+    "file": "out/person_recursion/state_2.png"
+  },
+  {
+    "state": 3,
+    "job_id": "56f69595-8676-4f32-a6ed-3c1d5454fe02",
+    "engine": "telablur-v1",
+    "params": {
+      "strength": 0.8
+    },
+    "image2_source": "H66A1678mab.jpg",
+    "elapsed_s": 7.1,
+    "file": "out/person_recursion/state_3.png"
+  },
+  {
+    "state": 4,
+    "job_id": "ee770ab9-48ba-4b64-8194-9243963e4b07",
+    "engine": "telablur-v1",
+    "params": {
+      "strength": 0.8
+    },
+    "image2_source": "H66A2008mab.jpg",
+    "elapsed_s": 7.1,
+    "file": "out/person_recursion/state_4.png"
+  },
+  {
+    "state": 5,
+    "job_id": "e67f0762-7d54-496b-913f-f9149385db8e",
+    "engine": "telablur-v1",
+    "params": {
+      "strength": 0.8
+    },
+    "image2_source": "H66A2596mab.jpg",
+    "elapsed_s": 6.9,
+    "file": "out/person_recursion/state_5.png"
+  }
+]

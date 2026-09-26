@@ -1,0 +1,207 @@
+/* Lifted from reference/screen.html's STYLE START/END block (docs/07-design.md
+   tokens, docs/05-screen-contract.md layout) — see LEARNINGS.md 2026-09-26 for
+   what was deliberately dropped: .pclip .edge/.num (dodeca.js never creates
+   those child spans, so the selectors are inert) and the reference's
+   edge-gradient .sel rule (replaced with the box-shadow rule already proven
+   to work, which doesn't depend on those missing spans). #stage/.pface/.pclip
+   themselves are unchanged from the reference — this file already had a
+   correct, simpler version of them; this replaces it with the fuller one
+   (adds background/cursor/flex) since they're compatible. */
+
+/* --- tokens, docs/07-design.md --------------------------------------- */
+:root{
+  --paper:#ffffff;   /* background, always white            */
+  --ink:#141414;     /* text, the stage, rules              */
+  --signal:#f0f22e;  /* the one live thing. never text on white */
+  --circuit:#4634e0; /* job ids, elapsed, credits. nothing else */
+  --slate:#6a696d;   /* secondary text, data labels         */
+  --steel:#7b7d86;   /* kickers, API field names            */
+  --mist:#d3d6d8;    /* hairlines, borders                  */
+  --track:#f0f0f1;   /* bar tracks, inactive pills          */
+
+  --S:180px;         /* face box                            */
+  --R:117.81px;      /* inradius = 0.6545 x S               */
+  color-scheme:light;
+  box-sizing:border-box;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Inter Tight",system-ui,-apple-system,Arial,sans-serif;
+  font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+
+/* --- shared ---------------------------------------------------------- */
+.mono,code{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--steel)}
+.sq{width:9px;height:9px;background:var(--signal);outline:1px solid var(--ink);
+  display:inline-block;flex:0 0 auto}
+.card{border:1px solid var(--mist);border-radius:10px;padding:12px 13px;min-width:0}
+.card > .kicker{display:block;margin-bottom:8px}
+button{font-family:"Inter Tight";font-size:12px;font-weight:500;background:var(--paper);
+  color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:5px 13px;cursor:pointer}
+button.primary{background:var(--ink);color:#fff;font-size:15px;font-weight:600;
+  padding:11px 26px;width:100%}
+button:focus-visible{outline:2px solid var(--circuit);outline-offset:2px}
+button:disabled{opacity:.4;cursor:default}
+
+/* --- shell ----------------------------------------------------------- */
+/* height, not min-height: 07-design.md's own warning is "min-height:0 on
+   every flex/grid child with a scroller, or the log will push the page
+   instead of scrolling" — that only holds if something above actually caps
+   the height in the first place. min-height:100% here doesn't; the grid
+   just grows to fit hundreds of real log lines instead of confining them
+   to #log's own scrollbar. Confirmed the bug via a real browser screenshot
+   (an 8862px-tall page) before fixing — see LEARNINGS.md, 2026-09-26. */
+.app{height:100%;display:grid;grid-template-rows:auto auto 1fr;gap:11px;
+  max-width:1500px;margin:0 auto;overflow:hidden;
+  padding:calc(12px + env(safe-area-inset-top,0px)) clamp(12px,2vw,22px)
+          calc(14px + env(safe-area-inset-bottom,0px))}
+
+/* --- 1 topbar -------------------------------------------------------- */
+#topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:9px}
+#topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;
+  letter-spacing:-.01em}
+#topbar h1{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
+
+/* --- 2 counters and engine line -------------------------------------- */
+#meta{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+#counters{display:flex;flex-wrap:wrap}
+#counters > span{padding-right:13px;margin-right:13px;border-right:1px solid var(--mist);
+  font-size:12.5px;color:var(--slate)}
+#counters > span:last-child{border-right:0;margin-right:0;padding-right:0}
+#counters b{color:var(--ink);font-weight:600;font-size:16px;margin-right:4px}
+#claim{font-size:11.5px;color:var(--slate);margin-top:4px}
+#engine-line{font-size:12px;color:var(--slate)}
+#engine-line .m{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--circuit)}
+
+/* --- 3 columns ------------------------------------------------------- */
+.main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr) minmax(280px,.95fr);
+  gap:11px;min-height:0}
+.col{display:flex;flex-direction:column;gap:11px;min-width:0;min-height:0}
+@media(max-width:1180px){
+  .main{grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr)}
+  .colC{grid-column:1 / -1}}
+@media(max-width:760px){
+  .main{grid-template-columns:1fr}
+  .colC{grid-column:auto}
+  /* .app{height:100%;overflow:hidden} is correct for the fixed 3-column
+     desktop layout (it's what keeps #log scrolling in its own box instead
+     of pushing the page — see the note above .app's rule). Once columns
+     stack into one on a phone, that same hard cap just clips everything
+     below the fold with no way to scroll to it — confirmed with a real
+     mobile viewport screenshot before fixing, not assumed. On a phone the
+     page scrolls normally instead; individual boxes (#log) get their own
+     bounded height instead of fighting over a 1fr row that no longer
+     constrains them. */
+  .app{height:auto;min-height:100%;overflow:visible}
+  #stage{flex:none;min-height:0;height:52vh;max-height:340px}
+  .logcard{flex:none}
+  #log{max-height:200px}
+  #meta{gap:8px 16px}
+  #counters{gap:2px 0}
+  #counters>span{font-size:11.5px;padding-right:10px;margin-right:10px}
+  #engine-line{font-size:11px}
+}
+
+/* --- the solid ------------------------------------------------------- */
+/* THE RULE: .pface carries the 3D transform and NOTHING that groups it.
+   No clip-path, filter, opacity below 1, mask, overflow or mix-blend-mode.
+   Any of those drops it out of the 3D context and the solid paints flat.
+   dodeca.js builds #solid and all 12 .pface/.pclip nodes at runtime — this
+   file only styles them, never creates them. */
+#stage{background:var(--ink);border-radius:10px;position:relative;overflow:hidden;
+  display:grid;place-items:center;perspective:720px;flex:1;min-height:320px;
+  touch-action:none;user-select:none;cursor:grab}
+.pface{position:absolute;inset:0;backface-visibility:hidden}
+.pclip{position:absolute;inset:0;
+  clip-path:polygon(50% 0%,97.55% 34.55%,79.39% 90.45%,20.61% 90.45%,2.45% 34.55%);
+  background:#0b0b0d center/cover no-repeat}
+.pface.sel .pclip{                     /* selection is an edge, never a wash */
+  box-shadow: inset 0 0 0 2px var(--signal);
+}
+#stage .hud{position:absolute;right:11px;top:10px;display:flex;gap:6px;z-index:6}
+#stage .hud button{font-size:10.5px;padding:3px 9px;background:rgba(255,255,255,.1);
+  color:#fff;border:1px solid rgba(255,255,255,.25)}
+#stage .tip{position:absolute;left:13px;bottom:11px;font-size:11.5px;
+  color:rgba(255,255,255,.45);z-index:6}
+
+/* --- facing you ------------------------------------------------------ */
+#faceimg{width:100%;border-radius:7px;display:block;border:1px solid var(--mist);
+  background:#000;aspect-ratio:3/2;object-fit:cover}
+#maskToggle{margin-top:8px;font-size:10.5px;padding:3px 11px}
+.facehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:10px 0 2px}
+.facehead h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.02em}
+.facehead span{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--circuit)}
+.facesub{margin:0 0 8px;font-size:12px;color:var(--slate)}
+.mfloor{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--circuit);margin-left:6px}
+
+/* data row: plain label on top, API field name under it, value right */
+.r{display:grid;grid-template-columns:1fr auto;gap:10px;padding:5px 0;
+  border-bottom:1px solid var(--mist);font-size:12px;align-items:baseline}
+.r:last-child{border-bottom:0}
+.r .k{color:var(--slate)}
+.r .k em{display:block;font-style:normal;font-family:"JetBrains Mono",monospace;
+  font-size:9px;color:var(--steel)}
+.r .v{font-weight:600;font-size:11.5px;text-align:right;word-break:break-all}
+.r .v.c{color:var(--circuit);font-family:"JetBrains Mono",monospace;font-weight:400;font-size:10px}
+
+#versions{margin-top:10px;border-top:2px solid var(--ink);padding-top:8px}
+/* M4: a side landed on four times reads four rising numbers down this column */
+.vrow{display:grid;grid-template-columns:50px 1fr auto auto;gap:9px;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--mist);font-size:11.5px;cursor:pointer}
+.vrow:last-child{border-bottom:0}
+.vrow.now{background:linear-gradient(transparent 64%,var(--signal) 64%)}
+.vthumb{width:50px;height:34px;border-radius:3px;border:1px solid var(--mist);
+  background-size:cover;background-position:center}
+.vmain b{font-weight:600}
+.vmain em{font-style:normal;display:block;font-family:"JetBrains Mono",monospace;
+  font-size:9.5px;color:var(--circuit)}
+.vfloor{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--steel);text-align:right}
+.vtime{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--steel);
+  text-align:right;line-height:1.5}
+
+/* --- floor strip under the solid (docs/mask-tasks M5) ------------------ */
+#floorstrip{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:8px}
+.fcell{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ffill{height:14px;border-radius:2px;background:var(--track);overflow:hidden}
+.ffill i{display:block;height:100%;width:0%;background:var(--ink);transition:width .4s ease}
+.fcell.front .ffill i{background:var(--signal)}
+.fnum{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--steel);text-align:center}
+
+/* --- activity -------------------------------------------------------- */
+#status{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+#stage-line{font-size:15px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+#stage-line .hl{background:linear-gradient(transparent 58%,var(--signal) 58%)}
+#poll-line{font-size:11.5px;color:var(--slate)}
+#clock-line{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--steel)}
+
+.draw{margin-bottom:9px}
+.draw .dlab{font-size:11.5px;color:var(--slate);margin-bottom:4px}
+.rung{display:grid;grid-template-columns:44px 46px 20px 1fr;gap:8px;align-items:center;
+  padding:5px 0;border-bottom:1px solid var(--mist);font-size:11.5px;
+  opacity:0;transform:translateY(-4px);transition:opacity .28s ease, transform .28s ease}
+.rung.in{opacity:1;transform:none}
+.rung .n{color:var(--steel);font-size:11px}
+.rung .o{font-weight:600}
+.rung .b{font-family:"JetBrains Mono",monospace;font-weight:500;text-align:center;
+  background:var(--track);border-radius:3px}
+.rung .b.one{background:var(--ink);color:#fff}
+.rung .j{font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--circuit);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dsum{margin-top:6px;font-size:12px}
+.dsum .bits{font-family:"JetBrains Mono",monospace;letter-spacing:.28em;font-weight:500}
+.dsum .good{background:linear-gradient(transparent 58%,var(--signal) 58%);font-weight:600}
+
+.logcard{flex:1;min-height:150px;display:flex;flex-direction:column}
+#log{background:var(--ink);border-radius:6px;padding:9px 10px;flex:1;overflow:auto;
+  font-family:"JetBrains Mono",monospace;font-size:10px;line-height:1.65;color:#d8d8d8}
+#log .l{display:grid;grid-template-columns:52px 104px 1fr;gap:8px;padding:1px 0}
+#log .t{color:#7a7a7a}
+#log .ty{color:var(--signal)}
+#log .ty.sub{color:#9aa0ff}
+#log .ty.cmp{color:#8ad8b5}
+#log .d{color:#cbcbcb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

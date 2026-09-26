@@ -1,0 +1,152 @@
+[
+  {
+    "label": "strength_0.1_full",
+    "job_id": "e1e98b90-6e57-443d-aa83-2b9c58887650",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "elapsed_s": 7.1,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.1_full.png"
+  },
+  {
+    "label": "strength_0.1_vertical",
+    "job_id": "e64ff8e1-7273-4750-8bb2-78373eda7168",
+    "params": {
+      "strength": 0.1,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.1_vertical.png"
+  },
+  {
+    "label": "strength_0.1_horizontal",
+    "job_id": "1cab42a5-48a6-43f9-a27f-7c2b69558766",
+    "params": {
+      "strength": 0.1,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.1_horizontal.png"
+  },
+  {
+    "label": "strength_0.3_full",
+    "job_id": "9597c4b4-1e99-4470-accb-dc8bed7a4705",
+    "params": {
+      "strength": 0.3,
+      "direction": "full"
+    },
+    "elapsed_s": 7.2,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.3_full.png"
+  },
+  {
+    "label": "strength_0.3_vertical",
+    "job_id": "0b41946e-3779-4b9a-a837-6f2a7c1376f3",
+    "params": {
+      "strength": 0.3,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.3_vertical.png"
+  },
+  {
+    "label": "strength_0.3_horizontal",
+    "job_id": "daead8f0-0a4c-4591-8898-f2049cb841b3",
+    "params": {
+      "strength": 0.3,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.3_horizontal.png"
+  },
+  {
+    "label": "strength_0.5_full",
+    "job_id": "10b650fc-5bf1-48a9-9356-461b7b763182",
+    "params": {
+      "strength": 0.5,
+      "direction": "full"
+    },
+    "elapsed_s": 7.1,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.5_full.png"
+  },
+  {
+    "label": "strength_0.5_vertical",
+    "job_id": "29b11b64-28ad-4cec-9707-2b26195ee152",
+    "params": {
+      "strength": 0.5,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.5_vertical.png"
+  },
+  {
+    "label": "strength_0.5_horizontal",
+    "job_id": "bb1532ef-f97e-4fde-b24d-be21c191a4a9",
+    "params": {
+      "strength": 0.5,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.5_horizontal.png"
+  },
+  {
+    "label": "strength_0.7_full",
+    "job_id": "d8c94cfa-fb32-43f0-b252-4a10a7951682",
+    "params": {
+      "strength": 0.7,
+      "direction": "full"
+    },
+    "elapsed_s": 7.1,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.7_full.png"
+  },
+  {
+    "label": "strength_0.7_vertical",
+    "job_id": "ea960157-7f76-416c-8b19-9cdeadc38539",
+    "params": {
+      "strength": 0.7,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.7_vertical.png"
+  },
+  {
+    "label": "strength_0.7_horizontal",
+    "job_id": "f8a7e701-d3c3-4b27-9d69-4cc2ba76d11b",
+    "params": {
+      "strength": 0.7,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.7_horizontal.png"
+  },
+  {
+    "label": "strength_0.9_full",
+    "job_id": "eef090e1-b0c4-40ab-b47a-e26b93803272",
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.9_full.png"
+  },
+  {
+    "label": "strength_0.9_vertical",
+    "job_id": "818c9e23-0bbf-4dce-80ef-4d4d1ca61b65",
+    "params": {
+      "strength": 0.9,
+      "direction": "vertical"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.9_vertical.png"
+  },
+  {
+    "label": "strength_0.9_horizontal",
+    "job_id": "e5c6ebcd-a117-461c-83da-3591e2145c1e",
+    "params": {
+      "strength": 0.9,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/two_images/strength_0.9_horizontal.png"
+  }
+]

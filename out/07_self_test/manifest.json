@@ -1,0 +1,98 @@
+[
+  {
+    "label": "01_baseline_0.6",
+    "job_id": "eaa3f7a1-fa9c-44b8-b771-dd2b85d43759",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 7.0,
+    "file": "out/self_test/01_baseline_0.6.png"
+  },
+  {
+    "label": "02_strength_0.1",
+    "job_id": "f9eb2c20-7377-4378-a285-b992670beec3",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 6.8,
+    "file": "out/self_test/02_strength_0.1.png"
+  },
+  {
+    "label": "03_strength_0.3",
+    "job_id": "032d9c86-820d-4fd7-bda4-231ac1d081ea",
+    "params": {
+      "strength": 0.3,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 6.7,
+    "file": "out/self_test/03_strength_0.3.png"
+  },
+  {
+    "label": "04_strength_0.8",
+    "job_id": "6931225f-6de0-4f21-a953-83c5602e7a89",
+    "params": {
+      "strength": 0.8,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 6.8,
+    "file": "out/self_test/04_strength_0.8.png"
+  },
+  {
+    "label": "05_direction_vertical",
+    "job_id": "8d39a8c9-baed-4162-8e86-e356fa3fcfa2",
+    "params": {
+      "strength": 0.6,
+      "direction": "vertical",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 6.9,
+    "file": "out/self_test/05_direction_vertical.png"
+  },
+  {
+    "label": "06_direction_horizontal",
+    "job_id": "0bceaac7-2d5c-476c-a9d5-e6d001142ce0",
+    "params": {
+      "strength": 0.6,
+      "direction": "horizontal",
+      "size": 1024,
+      "downscale": true
+    },
+    "elapsed_s": 7.0,
+    "file": "out/self_test/06_direction_horizontal.png"
+  },
+  {
+    "label": "07_downscale_off",
+    "job_id": "8b6a710d-53ef-4ef5-8223-9ade2e608dea",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 1024,
+      "downscale": false
+    },
+    "elapsed_s": 9.5,
+    "file": "out/self_test/07_downscale_off.png"
+  },
+  {
+    "label": "08_size_512",
+    "job_id": "c98c2747-94d7-43af-82ed-3df5dc879d3b",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 512,
+      "downscale": true
+    },
+    "elapsed_s": 6.9,
+    "file": "out/self_test/08_size_512.png"
+  }
+]

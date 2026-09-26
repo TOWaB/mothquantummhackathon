@@ -1,0 +1,182 @@
+[
+  {
+    "face": 1,
+    "subject": "2V0A0604mab.jpg",
+    "opposite": "H66A0009mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "98ad6362-8aff-4b64-9797-4a06294c8a88",
+    "status": "completed",
+    "elapsed_s": 7.7,
+    "file": "out/16_dodecahedron_faces/face01.png"
+  },
+  {
+    "face": 2,
+    "subject": "H66A0009mab.jpg",
+    "opposite": "2V0A0604mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "a76f3801-9b1f-4ed6-bd3b-de5dab1e62ad",
+    "status": "completed",
+    "elapsed_s": 7.2,
+    "file": "out/16_dodecahedron_faces/face02.png"
+  },
+  {
+    "face": 3,
+    "subject": "2V0A1228mab.jpg",
+    "opposite": "H66A1678mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "b0ee88f8-9372-4e3a-99f7-405c5a434c89",
+    "status": "completed",
+    "elapsed_s": 7.1,
+    "file": "out/16_dodecahedron_faces/face03.png"
+  },
+  {
+    "face": 4,
+    "subject": "H66A1678mab.jpg",
+    "opposite": "2V0A1228mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "3c03a27b-1a6a-4794-8e11-20be419b8e07",
+    "status": "completed",
+    "elapsed_s": 7.0,
+    "file": "out/16_dodecahedron_faces/face04.png"
+  },
+  {
+    "face": 5,
+    "subject": "2V0A6475mab.jpg",
+    "opposite": "H66A1993mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "f5cfb95e-7355-4e5c-84db-942f45f6ebfa",
+    "status": "completed",
+    "elapsed_s": 7.0,
+    "file": "out/16_dodecahedron_faces/face05.png"
+  },
+  {
+    "face": 6,
+    "subject": "H66A1993mab.jpg",
+    "opposite": "2V0A6475mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "485de39e-c1af-42cd-b20b-2bd3ec39e3c5",
+    "status": "completed",
+    "elapsed_s": 6.9,
+    "file": "out/16_dodecahedron_faces/face06.png"
+  },
+  {
+    "face": 7,
+    "subject": "2V0A7556mab.jpg",
+    "opposite": "H66A2008mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "0c4f9f44-7636-4a7a-8488-bd7d3d88118d",
+    "status": "completed",
+    "elapsed_s": 7.1,
+    "file": "out/16_dodecahedron_faces/face07.png"
+  },
+  {
+    "face": 8,
+    "subject": "H66A2008mab.jpg",
+    "opposite": "2V0A7556mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "a92f4af0-c3da-4f0a-84c3-224730d0c6a3",
+    "status": "completed",
+    "elapsed_s": 9.8,
+    "file": "out/16_dodecahedron_faces/face08.png"
+  },
+  {
+    "face": 9,
+    "subject": "2V0A7693mab.jpg",
+    "opposite": "H66A2596mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "b82e9209-7a1c-40d4-a4f9-6260b200c669",
+    "status": "completed",
+    "elapsed_s": 7.1,
+    "file": "out/16_dodecahedron_faces/face09.png"
+  },
+  {
+    "face": 10,
+    "subject": "H66A2596mab.jpg",
+    "opposite": "2V0A7693mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "700ff5dd-bf3e-4c11-bff8-22836cfac837",
+    "status": "completed",
+    "elapsed_s": 7.1,
+    "file": "out/16_dodecahedron_faces/face10.png"
+  },
+  {
+    "face": 11,
+    "subject": "2V0A8428mab.jpg",
+    "opposite": "H66A3243mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "9ec8e052-b3cf-4faa-b5f2-2be4122b879b",
+    "status": "completed",
+    "elapsed_s": 9.9,
+    "file": "out/16_dodecahedron_faces/face11.png"
+  },
+  {
+    "face": 12,
+    "subject": "H66A3243mab.jpg",
+    "opposite": "2V0A8428mab.jpg",
+    "params": {
+      "strength": 0.1,
+      "direction": "full",
+      "mask_radius": 30,
+      "mask_type": "distance_gradient"
+    },
+    "job_id": "394f17c1-1d99-4ab5-9603-8a28fa8c0cf0",
+    "status": "completed",
+    "elapsed_s": 7.1,
+    "file": "out/16_dodecahedron_faces/face12.png"
+  }
+]

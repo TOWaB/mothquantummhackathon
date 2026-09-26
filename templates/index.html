@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quantum Dodecahedron</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- 1 topbar -->
+  <header id="topbar">
+    <span class="brand"><i class="sq"></i> Visual Hive</span>
+    <h1>Quantum Dodecahedron</h1>
+    <button id="resetBtn">Start again</button>
+  </header>
+
+  <!-- 2 counters and engine line -->
+  <div id="meta">
+    <div>
+      <div id="counters">
+        <span><b id="c-flips">0</b>coin flips</span>
+        <span><b>12</b>sides</span>
+        <span><b id="c-versions">0</b>versions made</span>
+        <span><b id="c-spins">0</b>spins</span>
+        <span><b id="c-credits">0</b>credits</span>
+      </div>
+      <div id="claim">Every side here was chosen by a flip on Atlas, and every flip has a job id.</div>
+    </div>
+    <div id="engine-line">
+      Side picked by four <span class="m">coin-toss-v1</span> flips, picture from
+      <span class="m">telablur-v1</span>. <span class="m">backend aer &middot; mode emu</span>
+    </div>
+  </div>
+
+  <!-- 3 the three columns -->
+  <div class="main">
+
+    <!-- left: the solid -->
+    <div class="col">
+      <div id="stage">
+        <div class="hud">
+          <button id="autoSpinBtn">Stop auto spin</button>
+        </div>
+        <div class="tip">Drag to turn. Click a face to bring it round.</div>
+      </div>
+      <div id="floorstrip"></div>
+    </div>
+
+    <!-- middle: facing you -->
+    <div class="col">
+      <div class="card">
+        <span class="kicker">Facing you</span>
+        <img id="faceimg" alt="">
+        <button id="maskToggle" class="ghost" hidden>Show mask</button>
+
+        <div class="facehead">
+          <h2 id="facename">&nbsp;</h2>
+          <span id="faceversion"></span>
+        </div>
+        <p class="facesub" id="facesub"></p>
+
+        <div class="rows" id="facerows"></div>
+
+        <div id="versions">
+          <span class="kicker">Every version of this side</span>
+          <div id="vlist" style="margin-top:5px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: the wait, in the order it happens -->
+    <div class="col colC">
+      <div class="card">
+        <button class="primary" id="spinBtn">Spin it</button>
+        <div id="status">
+          <div id="stage-line">Ready. Press spin.</div>
+          <div id="poll-line">Four flips pick the side, about 3.6 seconds each.</div>
+          <div id="clock-line"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="kicker">The coin flips</span>
+        <div id="ladder-rows"></div>
+      </div>
+
+      <div class="card logcard">
+        <span class="kicker">Atlas log</span>
+        <div id="log"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="/static/js/dodeca.js"></script>
+<script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+[
+  {
+    "label": "01_baseline",
+    "job_id": "86adee27-45d9-4983-9ca0-18079d0c2504",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 7.2,
+    "file": "out/param_sweep/01_baseline.png"
+  },
+  {
+    "label": "02_strength_low_0.3",
+    "job_id": "e72eb3ff-994c-4d80-954d-03b3a1e56853",
+    "params": {
+      "strength": 0.3,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 7.4,
+    "file": "out/param_sweep/02_strength_low_0.3.png"
+  },
+  {
+    "label": "03_strength_high_0.8",
+    "job_id": "1fd8dfd4-3a57-42f3-b975-58c3ce637e53",
+    "params": {
+      "strength": 0.8,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 6.9,
+    "file": "out/param_sweep/03_strength_high_0.8.png"
+  },
+  {
+    "label": "04_direction_vertical",
+    "job_id": "ed9a0731-c1a9-4726-bef8-529af74b534d",
+    "params": {
+      "strength": 0.6,
+      "direction": "vertical",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 6.9,
+    "file": "out/param_sweep/04_direction_vertical.png"
+  },
+  {
+    "label": "05_direction_horizontal",
+    "job_id": "a1553c12-6a81-4ddd-8a9e-035c6cce34ff",
+    "params": {
+      "strength": 0.6,
+      "direction": "horizontal",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 7.0,
+    "file": "out/param_sweep/05_direction_horizontal.png"
+  },
+  {
+    "label": "06_downscale_off",
+    "job_id": "7410f17c-d38b-4b6d-9721-463e7904f38f",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 1024,
+      "downscale": false
+    },
+    "mask": true,
+    "elapsed_s": 9.8,
+    "file": "out/param_sweep/06_downscale_off.png"
+  },
+  {
+    "label": "07_size_512",
+    "job_id": "226d1b1b-c937-4263-b6a6-6f5c7c623f5d",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 512,
+      "downscale": true
+    },
+    "mask": true,
+    "elapsed_s": 6.9,
+    "file": "out/param_sweep/07_size_512.png"
+  },
+  {
+    "label": "08_no_mask",
+    "job_id": "2d2a73aa-e5b5-460a-8e84-df43d8db72b8",
+    "params": {
+      "strength": 0.6,
+      "direction": "full",
+      "size": 1024,
+      "downscale": true
+    },
+    "mask": false,
+    "elapsed_s": 6.9,
+    "file": "out/param_sweep/08_no_mask.png"
+  }
+]

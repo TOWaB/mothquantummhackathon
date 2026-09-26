@@ -1,0 +1,35 @@
+[
+  {
+    "label": "gradient_radius_30",
+    "radius": 30,
+    "params": {
+      "strength": 0.6,
+      "direction": "full"
+    },
+    "job_id": "4e3c5338-d10d-46e1-a088-3dddb62445cd",
+    "elapsed_s": 7.5,
+    "file": "out/12_gradient_mask_test/gradient_radius_30_result.png"
+  },
+  {
+    "label": "gradient_radius_60",
+    "radius": 60,
+    "params": {
+      "strength": 0.6,
+      "direction": "full"
+    },
+    "job_id": "383837dc-d9f6-41de-b47a-37b21dcdb47a",
+    "elapsed_s": 7.3,
+    "file": "out/12_gradient_mask_test/gradient_radius_60_result.png"
+  },
+  {
+    "label": "gradient_radius_100",
+    "radius": 100,
+    "params": {
+      "strength": 0.6,
+      "direction": "full"
+    },
+    "job_id": "19c98129-d560-4f49-bc7b-cd8162ef41d5",
+    "elapsed_s": 7.7,
+    "file": "out/12_gradient_mask_test/gradient_radius_100_result.png"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "job_id": "577c3162-c76c-45e8-b8da-145512338c71",
+  "engine": "entanglement-shader-v1",
+  "params": {
+    "absorption": 0.95,
+    "incoming_rays": 8,
+    "interaction": 1,
+    "layers": 2,
+    "reflectance": 0.2,
+    "resolution": 60,
+    "style": "peaked"
+  },
+  "elapsed_s": 188.0,
+  "status": "completed",
+  "content_type": "application/zip",
+  "size_bytes": 47822,
+  "output_file": "out/materials/probe/result.zip"
+}

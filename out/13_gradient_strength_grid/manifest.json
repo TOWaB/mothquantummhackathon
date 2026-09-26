@@ -1,0 +1,167 @@
+[
+  {
+    "label": "radius_30_strength_0.1",
+    "radius": 30,
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "job_id": "72d70ad2-0feb-4fd9-8439-dd0802e1b96f",
+    "elapsed_s": 7.2,
+    "file": "out/13_gradient_strength_grid/radius_30_strength_0.1.png"
+  },
+  {
+    "label": "radius_30_strength_0.3",
+    "radius": 30,
+    "params": {
+      "strength": 0.3,
+      "direction": "full"
+    },
+    "job_id": "3c46df51-c7be-4939-a5ca-a537c86e2776",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_30_strength_0.3.png"
+  },
+  {
+    "label": "radius_30_strength_0.5",
+    "radius": 30,
+    "params": {
+      "strength": 0.5,
+      "direction": "full"
+    },
+    "job_id": "88373e09-ca09-4453-955c-d7e32bee268b",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_30_strength_0.5.png"
+  },
+  {
+    "label": "radius_30_strength_0.7",
+    "radius": 30,
+    "params": {
+      "strength": 0.7,
+      "direction": "full"
+    },
+    "job_id": "c37d4bd6-9bbd-4fa1-9dab-39d9a8455299",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_30_strength_0.7.png"
+  },
+  {
+    "label": "radius_30_strength_0.9",
+    "radius": 30,
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "job_id": "5f6be815-40ab-4d0c-9e8e-d1c19cf57e0b",
+    "elapsed_s": 7.9,
+    "file": "out/13_gradient_strength_grid/radius_30_strength_0.9.png"
+  },
+  {
+    "label": "radius_60_strength_0.1",
+    "radius": 60,
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "job_id": "fc040599-8bf1-4595-93e3-800b95758953",
+    "elapsed_s": 7.4,
+    "file": "out/13_gradient_strength_grid/radius_60_strength_0.1.png"
+  },
+  {
+    "label": "radius_60_strength_0.3",
+    "radius": 60,
+    "params": {
+      "strength": 0.3,
+      "direction": "full"
+    },
+    "job_id": "0bd3accf-767b-45a2-9fd2-faad97dbc19a",
+    "elapsed_s": 7.9,
+    "file": "out/13_gradient_strength_grid/radius_60_strength_0.3.png"
+  },
+  {
+    "label": "radius_60_strength_0.5",
+    "radius": 60,
+    "params": {
+      "strength": 0.5,
+      "direction": "full"
+    },
+    "job_id": "4d70becb-4f4f-4cd8-b985-877c5ff4f71d",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_60_strength_0.5.png"
+  },
+  {
+    "label": "radius_60_strength_0.7",
+    "radius": 60,
+    "params": {
+      "strength": 0.7,
+      "direction": "full"
+    },
+    "job_id": "0dee334c-d788-4908-a4db-44279dfb3c6e",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_60_strength_0.7.png"
+  },
+  {
+    "label": "radius_60_strength_0.9",
+    "radius": 60,
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "job_id": "287f8bb2-c4f9-437d-898b-7d34b42f01a0",
+    "elapsed_s": 7.0,
+    "file": "out/13_gradient_strength_grid/radius_60_strength_0.9.png"
+  },
+  {
+    "label": "radius_100_strength_0.1",
+    "radius": 100,
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "job_id": "a9966da1-bdcc-4158-8371-cd3708960eba",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_100_strength_0.1.png"
+  },
+  {
+    "label": "radius_100_strength_0.3",
+    "radius": 100,
+    "params": {
+      "strength": 0.3,
+      "direction": "full"
+    },
+    "job_id": "f92971d2-771f-49b9-9082-97b6efaaf0a4",
+    "elapsed_s": 7.1,
+    "file": "out/13_gradient_strength_grid/radius_100_strength_0.3.png"
+  },
+  {
+    "label": "radius_100_strength_0.5",
+    "radius": 100,
+    "params": {
+      "strength": 0.5,
+      "direction": "full"
+    },
+    "job_id": "1fc8c80d-1e52-4e44-8b96-15500c61fa1c",
+    "elapsed_s": 7.2,
+    "file": "out/13_gradient_strength_grid/radius_100_strength_0.5.png"
+  },
+  {
+    "label": "radius_100_strength_0.7",
+    "radius": 100,
+    "params": {
+      "strength": 0.7,
+      "direction": "full"
+    },
+    "job_id": "fc3e5276-bd84-4069-abcf-4785b6c65348",
+    "elapsed_s": 7.0,
+    "file": "out/13_gradient_strength_grid/radius_100_strength_0.7.png"
+  },
+  {
+    "label": "radius_100_strength_0.9",
+    "radius": 100,
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "job_id": "e4bbcb87-c055-4cef-b9da-3ada4743be54",
+    "elapsed_s": 7.2,
+    "file": "out/13_gradient_strength_grid/radius_100_strength_0.9.png"
+  }
+]

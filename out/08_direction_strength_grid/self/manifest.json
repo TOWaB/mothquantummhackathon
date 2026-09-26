@@ -1,0 +1,152 @@
+[
+  {
+    "label": "strength_0.1_full",
+    "job_id": "d2fe1d10-7d54-45b4-b0ee-728058c26056",
+    "params": {
+      "strength": 0.1,
+      "direction": "full"
+    },
+    "elapsed_s": 7.3,
+    "file": "out/08_direction_strength_grid/self/strength_0.1_full.png"
+  },
+  {
+    "label": "strength_0.1_vertical",
+    "job_id": "62112b42-c5b7-40a5-9cf2-604f9b50333b",
+    "params": {
+      "strength": 0.1,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/self/strength_0.1_vertical.png"
+  },
+  {
+    "label": "strength_0.1_horizontal",
+    "job_id": "0a6db421-16a9-4436-ac3e-24b91d91e4fb",
+    "params": {
+      "strength": 0.1,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/self/strength_0.1_horizontal.png"
+  },
+  {
+    "label": "strength_0.3_full",
+    "job_id": "0abd3897-0178-4426-8777-c308266d774b",
+    "params": {
+      "strength": 0.3,
+      "direction": "full"
+    },
+    "elapsed_s": 7.2,
+    "file": "out/08_direction_strength_grid/self/strength_0.3_full.png"
+  },
+  {
+    "label": "strength_0.3_vertical",
+    "job_id": "ffc8fdc9-f7aa-443e-a834-0ef2b666e320",
+    "params": {
+      "strength": 0.3,
+      "direction": "vertical"
+    },
+    "elapsed_s": 6.8,
+    "file": "out/08_direction_strength_grid/self/strength_0.3_vertical.png"
+  },
+  {
+    "label": "strength_0.3_horizontal",
+    "job_id": "ba79953e-6137-435d-901f-9dbbee9713ec",
+    "params": {
+      "strength": 0.3,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/self/strength_0.3_horizontal.png"
+  },
+  {
+    "label": "strength_0.5_full",
+    "job_id": "1269d5e0-9f2d-4bca-a15a-fe235613dee2",
+    "params": {
+      "strength": 0.5,
+      "direction": "full"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/self/strength_0.5_full.png"
+  },
+  {
+    "label": "strength_0.5_vertical",
+    "job_id": "02b063d1-125c-43b4-96c1-089a0760c258",
+    "params": {
+      "strength": 0.5,
+      "direction": "vertical"
+    },
+    "elapsed_s": 7.4,
+    "file": "out/08_direction_strength_grid/self/strength_0.5_vertical.png"
+  },
+  {
+    "label": "strength_0.5_horizontal",
+    "job_id": "1280059c-f456-4717-8188-19e78b2ec51f",
+    "params": {
+      "strength": 0.5,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 7.1,
+    "file": "out/08_direction_strength_grid/self/strength_0.5_horizontal.png"
+  },
+  {
+    "label": "strength_0.7_full",
+    "job_id": "b4194df1-8c05-4531-a14b-6cffb3751901",
+    "params": {
+      "strength": 0.7,
+      "direction": "full"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/self/strength_0.7_full.png"
+  },
+  {
+    "label": "strength_0.7_vertical",
+    "job_id": "e1433e8a-ba2f-402f-b14f-ddf086b3a4d3",
+    "params": {
+      "strength": 0.7,
+      "direction": "vertical"
+    },
+    "elapsed_s": 6.8,
+    "file": "out/08_direction_strength_grid/self/strength_0.7_vertical.png"
+  },
+  {
+    "label": "strength_0.7_horizontal",
+    "job_id": "e790c1d0-7110-455a-9f59-146f30f01b3b",
+    "params": {
+      "strength": 0.7,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/self/strength_0.7_horizontal.png"
+  },
+  {
+    "label": "strength_0.9_full",
+    "job_id": "b77f6474-25b7-4412-a740-05f20a85a740",
+    "params": {
+      "strength": 0.9,
+      "direction": "full"
+    },
+    "elapsed_s": 7.0,
+    "file": "out/08_direction_strength_grid/self/strength_0.9_full.png"
+  },
+  {
+    "label": "strength_0.9_vertical",
+    "job_id": "56905875-4010-4051-ba13-50bd9fc64876",
+    "params": {
+      "strength": 0.9,
+      "direction": "vertical"
+    },
+    "elapsed_s": 5.3,
+    "file": "out/08_direction_strength_grid/self/strength_0.9_vertical.png"
+  },
+  {
+    "label": "strength_0.9_horizontal",
+    "job_id": "bf371a3c-fc70-417e-886c-cb8db0296ecf",
+    "params": {
+      "strength": 0.9,
+      "direction": "horizontal"
+    },
+    "elapsed_s": 6.9,
+    "file": "out/08_direction_strength_grid/self/strength_0.9_horizontal.png"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "job_id": "035d731d-13a3-40b4-b4fb-9a5a0b70790f",
+  "engine": "telablur-v1",
+  "params": {
+    "strength": 0.6
+  },
+  "image1": "H66A0009mab.jpg",
+  "image2": "generated radial gradient",
+  "mask": "generated radial vignette (white center, black edge)",
+  "elapsed_s": 7.4,
+  "output_file": "out/masked_test_035d731d-13a3-40b4-b4fb-9a5a0b70790f_result.png"
+}
