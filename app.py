@@ -446,8 +446,11 @@ def _counters_since_reset() -> dict:
             last_reset_ts = e["ts"]
             break
     since = [e for e in events if last_reset_ts is None or e["ts"] > last_reset_ts]
+    bit_events = [e for e in since if e["type"] == "quantum_bit"]
+    heads = sum(1 for e in bit_events if e.get("result", {}).get("output") == "heads")
     return {
-        "flips": sum(1 for e in since if e["type"] == "quantum_bit"),
+        "flips": len(bit_events),
+        "heads_pct": round(100 * heads / len(bit_events)) if bit_events else None,
         "spins": sum(1 for e in since if e["type"] == "spin_start"),
         "credits": sum(e.get("credits", 0) for e in since if e["type"] == "submit"),
         "versions": sum(len(v) for v in versions.load_versions().values()),

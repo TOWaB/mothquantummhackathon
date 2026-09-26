@@ -32,6 +32,7 @@ const els = {
   cFlips: document.getElementById("c-flips"),
   cVersions: document.getElementById("c-versions"),
   cSpins: document.getElementById("c-spins"),
+  claim: document.getElementById("claim"),
 };
 
 const METHOD = {
@@ -104,6 +105,15 @@ function bumpCounters() {
   els.cSpins.textContent = counters.spins;
   // docs/TASKS-site-copy.md §3: that counter is gone from the screen
   // entirely now, five becomes four — no display element for it anymore.
+
+  // This session's own real flips, not a frozen claim from one past test
+  // run (see docs/06-copy.md) — no "no repeats" claim, since that isn't
+  // something cheap to verify live across every flip ever made.
+  if (els.claim) {
+    els.claim.textContent = counters.flips
+      ? `Every side is chosen by a flip nobody can predict. ${counters.flips} real flip${counters.flips === 1 ? "" : "s"} so far this session, ${counters.heads_pct}% heads.`
+      : "Every side is chosen by a flip nobody can predict.";
+  }
 }
 
 function logRow(ev) {

@@ -55,8 +55,17 @@ button:disabled{opacity:.4;cursor:default}
    just grows to fit hundreds of real log lines instead of confining them
    to #log's own scrollbar. Confirmed the bug via a real browser screenshot
    (an 8862px-tall page) before fixing — see LEARNINGS.md, 2026-09-26. */
-.app{height:100%;display:grid;grid-template-rows:auto auto 1fr;gap:11px;
-  max-width:1500px;margin:0 auto;overflow:hidden;
+/* height:auto + overflow:visible, not the fixed-viewport-height, clipped
+   shell this used to be: Bogdan's own call (26-09-2026) — the page scrolls
+   as one normal page now, "Facing you" included, rather than being boxed
+   into its own internal scrollbar. #log keeps its scroll (below) but is no
+   longer fighting a hard-capped 1fr row to get it — CSS grid's own
+   align-items:stretch default gives .logcard's column the height of
+   whichever column is naturally tallest (usually the middle one, once it's
+   unclipped), and .logcard's own flex:1 + #log's overflow:auto turn that
+   into "same height as Facing you, scrolls inside itself" for free. */
+.app{height:auto;min-height:100%;overflow:visible;display:grid;grid-template-rows:auto auto 1fr;gap:11px;
+  max-width:1500px;margin:0 auto;
   padding:calc(12px + env(safe-area-inset-top,0px)) clamp(12px,2vw,22px)
           calc(14px + env(safe-area-inset-bottom,0px))}
 
@@ -73,9 +82,9 @@ button:disabled{opacity:.4;cursor:default}
 }
 
 /* --- intro block (docs/TASKS-site-copy.md §2) -------------------------- */
-#intro{max-width:66ch;margin:2px auto 4px}
+#intro{margin:2px 0 4px}
 #intro .lede{font-size:17px;font-weight:600;letter-spacing:-.015em;margin:0 0 8px}
-#intro p{font-size:13.5px;line-height:1.55;color:var(--slate);margin:0 0 7px;max-width:66ch}
+#intro p{font-size:13.5px;line-height:1.55;color:var(--slate);margin:0 0 7px;max-width:none}
 #intro[hidden]{display:none}
 #intro.collapsed p:not(.lede){display:none}
 #introToggle{
@@ -100,27 +109,15 @@ button:disabled{opacity:.4;cursor:default}
 .main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,1fr) minmax(280px,.95fr);
   gap:11px;min-height:0}
 .col{display:flex;flex-direction:column;gap:11px;min-width:0;min-height:0}
-/* The middle column had no internal scroll, unlike .logcard's — real
-   version history (several entries deep) genuinely overflows a fixed-height
-   card with no way to reach the rest of it, confirmed directly (a real
-   screenshot showing content cut off mid-row with no scrollbar at all). */
-#facingCard{flex:1;min-height:0;overflow-y:auto}
+/* Full page scroll now (see .app), so the middle column just flows with
+   its natural content height — no internal scrollbar of its own. */
+#facingCard{flex:1}
 @media(max-width:1180px){
   .main{grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr)}
   .colC{grid-column:1 / -1}}
 @media(max-width:760px){
   .main{grid-template-columns:1fr}
   .colC{grid-column:auto}
-  /* .app{height:100%;overflow:hidden} is correct for the fixed 3-column
-     desktop layout (it's what keeps #log scrolling in its own box instead
-     of pushing the page — see the note above .app's rule). Once columns
-     stack into one on a phone, that same hard cap just clips everything
-     below the fold with no way to scroll to it — confirmed with a real
-     mobile viewport screenshot before fixing, not assumed. On a phone the
-     page scrolls normally instead; individual boxes (#log) get their own
-     bounded height instead of fighting over a 1fr row that no longer
-     constrains them. */
-  .app{height:auto;min-height:100%;overflow:visible}
   #stage{flex:none;min-height:0;height:52vh;max-height:340px}
   .logcard{flex:none}
   #log{max-height:200px}
