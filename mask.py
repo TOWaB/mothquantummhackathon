@@ -9,13 +9,25 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageFilter, ImageOps
-from rembg import remove
+from rembg import new_session, remove
 from scipy.ndimage import distance_transform_edt
+
+# Explicit, deliberately light session — rembg's own unqualified default
+# (whatever its current release resolves to; confirmed live tonight,
+# 26-09-2026, to be "bria-rmbg", ~1GB on disk) pushed this process to
+# ~6.8GB RSS on a 7.7GB shared box, and the kernel OOM-killer took it out
+# every single time a spin reached this call — silently, mid-spin, no
+# error logged, no telablur-v1 call ever made. u2netp is rembg's own
+# "portable" pruned model (~4.7MB): a visibly rougher silhouette, but
+# this only ever feeds a distance-transform gradient, not a pixel-perfect
+# matte, and a working rough mask beats a process that cannot survive
+# calling this function at all.
+_SESSION = new_session("u2netp")
 
 
 def segment_person(image_path: Path) -> Image.Image:
     photo = Image.open(image_path).convert("RGB")
-    cutout = remove(photo)
+    cutout = remove(photo, session=_SESSION)
     return cutout.split()[-1]  # alpha channel, white=subject
 
 

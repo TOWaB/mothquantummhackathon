@@ -87,11 +87,38 @@ Seven types. Every record has `ts` in ISO 8601 with a timezone, and `type`.
 ```
 The whole draw history including discards. This one record drives the ladder.
 
+### `spin_method_pick_start`
+```json
+{"ts": "...", "type": "spin_method_pick_start", "spin_id": "test01", "face": 8}
+```
+Fires right before the single quantum_bit() call that decides reroll vs
+reblend, so the client can render its ladder rung live rather than
+retroactively — same principle as `spin_param_pick_start` below. Unlike
+that event and the face pick, this one is always exactly one bit with no
+accept/reject branch: heads (bit=1) is reblend, tails (bit=0) is reroll,
+both are always valid outcomes.
+
 ### `spin_method_picked`
 ```json
 {"ts": "...", "type": "spin_method_picked", "spin_id": "test01", "face": 8, "method": "reroll"}
 ```
 `method` is `original`, `reroll` or `reblend`.
+
+### `spin_param_pick_start`
+```json
+{"ts": "...", "type": "spin_param_pick_start", "spin_id": "test01", "face": 8,
+ "param": "radius", "options": [15, 30, 45, 60, 90]}
+```
+Fires before each of the three real `quantum_choice()` calls a `reroll`
+makes (radius, then strength, then direction, in that order — matching
+`RADII`/`STRENGTHS`/`DIRECTIONS` in `app.py`) — live, not retroactive, same
+reason as `spin_mask_ready` and `spin_face_picked`'s own live rejection
+lines. `options` is that call's full option list, so the client can
+compute the same rejection-sampling threshold (`bits_needed`,
+`idx < len(options)`) the server already used, and render each real flip
+as its own ladder rung as it lands. Does not fire for `reblend`, which
+skips all three param picks entirely (see `spin_method_picked`'s handling
+in `app.js`).
 
 ### `spin_mask_ready`
 ```json

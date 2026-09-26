@@ -91,6 +91,22 @@ Every number in the last two rows comes from the run that just happened.
 | `reroll` | run again with new settings, same two photos |
 | `reblend` | run again with the same settings, blending onto the last result |
 
+### The method-pick ladder rung
+
+Live, between the face pick and whatever comes next — one real flip decides
+reroll vs reblend, same visual treatment as a face-pick rung (Clementine,
+26-09-2026: states the actual fact, not the mechanism; matches the existing
+row grammar above).
+
+| Label | Bit | On screen once it lands |
+|---|---|---|
+| Where it starts from | `0` (tails) | `0 is reroll: run again with new settings, same two photos.` |
+| Where it starts from | `1` (heads) | `1 is reblend: run again with the same settings, blending onto the last result.` |
+
+On `reblend`, the three param-pick rungs below never fire — the ladder
+states that plainly instead of leaving silence: `No new picks. Same
+settings, fed back in.`
+
 ---
 
 ## Walk-up script

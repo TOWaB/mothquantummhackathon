@@ -40,6 +40,14 @@ const METHOD = {
   reblend: "run again with the same settings, blending onto the last result",
 };
 
+// docs/06-copy.md's data-row labels, reused verbatim for the live param-pick
+// ladder rungs rather than inventing a second wording for the same field.
+const PARAM_LABELS = {
+  radius: "How wide it spreads",
+  strength: "How much mixing",
+  direction: "Which way it mixes",
+};
+
 const ROWS = [
   ["First photo", "subject", (p, face) => `Face ${face}`, false,
     (p, face) => photographer(latestState?.face_photos?.[face]?.subject)],
@@ -81,6 +89,8 @@ let pickingFace = false;
 let drawIndex = 0;
 let rungInDraw = 0;
 let currentDrawEl = null;
+let activeMethodPick = null; // { drawEl } — set between spin_method_pick_start and its landing quantum_bit
+let activeParamPick = null; // { param, label, options, threshold, bitsNeeded, attemptIndex, bitsSoFar, drawEl }
 let spinClockTimer = null;
 let spinClockStart = 0;
 let frontFace = 1; // whatever face is actually fronting, including at construction
@@ -161,6 +171,8 @@ function clearLadder() {
   drawIndex = 0;
   rungInDraw = 0;
   currentDrawEl = null;
+  activeMethodPick = null;
+  activeParamPick = null;
 }
 
 const ORDINAL = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth"];
@@ -199,6 +211,63 @@ function addDsum(el, bits, idx, accepted, face) {
     ? `<span class="bits">${bitsStr}</span> is ${idx}. Counting from zero, that is <span class="good">side ${face}</span>.`
     : `<span class="bits">${bitsStr}</span> is ${idx}. Only 12 sides, so it goes and we draw again.`;
   el.appendChild(dsum);
+}
+
+// ---- generalized ladder rungs, for the method pick and the reroll param
+// picks (radius/strength/direction) — parallel to landRung/addDsum above,
+// which stay exactly as they were for the face pick. Not a rewrite of
+// those: a face-pick draw is always exactly 4 bits with a 12-side
+// threshold: baking that into a shared function would need it to take the
+// same shape as these more general, variable-length draws anyway, so nothing
+// is actually saved by merging them, and the face-pick path is the one path
+// that must not regress tonight.
+function startLadderDraw(labelText) {
+  const el = document.createElement("div");
+  el.className = "draw";
+  const lab = document.createElement("div");
+  lab.className = "dlab";
+  lab.textContent = labelText;
+  el.appendChild(lab);
+  els.ladder.appendChild(el);
+  return el;
+}
+
+function addPlainLadderLine(text) {
+  const el = document.createElement("div");
+  el.className = "draw";
+  const dsum = document.createElement("div");
+  dsum.className = "dsum";
+  dsum.textContent = text;
+  el.appendChild(dsum);
+  els.ladder.appendChild(el);
+}
+
+function landGenericRung(drawEl, rungIndex, ev) {
+  const bit = ev.result.output === "heads" ? 1 : 0;
+  const rung = document.createElement("div");
+  rung.className = "rung";
+  rung.innerHTML =
+    `<span class="n">Flip ${rungIndex + 1}</span><span class="o">${ev.result.output}</span>` +
+    `<span class="b${bit === 1 ? " one" : ""}">${bit}</span>` +
+    `<span class="j">${ev.job_id.slice(0, 8)} · ibm ${(ev.result.ibm_job_id || "").slice(0, 16)}</span>`;
+  drawEl.appendChild(rung);
+  requestAnimationFrame(() => rung.classList.add("in"));
+  return bit;
+}
+
+function addGenericDsum(el, html) {
+  const dsum = document.createElement("div");
+  dsum.className = "dsum";
+  dsum.innerHTML = html;
+  el.appendChild(dsum);
+}
+
+function startParamAttempt(pick) {
+  const label = pick.attemptIndex === 0
+    ? pick.label
+    : `${pick.label} — ${ORDINAL[pick.attemptIndex] || (pick.attemptIndex + 1) + "th"} go`;
+  pick.drawEl = startLadderDraw(label);
+  pick.bitsSoFar = [];
 }
 
 // The authoritative, retroactive pass (server's own bits, at spin_face_picked)
@@ -411,8 +480,55 @@ function renderEvent(ev) {
             setStatus(`That is ${idx}. Only 12 sides, so it goes and we draw again.`, "", "");
           }
         }
+      } else if (activeMethodPick) {
+        // Single real flip, always valid (reroll/reblend are the only two
+        // outcomes) — no accept/reject branch needed, unlike face-pick and
+        // the param picks below.
+        const bit = landGenericRung(activeMethodPick.drawEl, 0, ev);
+        addGenericDsum(
+          activeMethodPick.drawEl,
+          bit === 1
+            ? `<span class="bits">1</span> is reblend: run again with the same settings, blending onto the last result.`
+            : `<span class="bits">0</span> is reroll: run again with new settings, same two photos.`
+        );
+        activeMethodPick = null;
+      } else if (activeParamPick) {
+        const pick = activeParamPick;
+        const bit = landGenericRung(pick.drawEl, pick.bitsSoFar.length, ev);
+        pick.bitsSoFar.push(bit);
+        if (pick.bitsSoFar.length === pick.bitsNeeded) {
+          const bits = pick.bitsSoFar;
+          const idx = parseInt(bits.join(""), 2);
+          const bitsStr = bits.join(" ");
+          if (idx < pick.threshold) {
+            addGenericDsum(pick.drawEl, `<span class="bits">${bitsStr}</span> is ${idx}. ${pick.label}: <span class="good">${pick.options[idx]}</span>.`);
+            activeParamPick = null;
+          } else {
+            addGenericDsum(pick.drawEl, `<span class="bits">${bitsStr}</span> is ${idx}. Only ${pick.threshold} options, so it goes and we draw again.`);
+            pick.attemptIndex++;
+            startParamAttempt(pick);
+          }
+        }
       }
       break;
+    case "spin_method_pick_start":
+      activeMethodPick = { drawEl: startLadderDraw("Where it starts from") };
+      break;
+    case "spin_param_pick_start": {
+      const label = PARAM_LABELS[ev.param] || ev.param;
+      activeParamPick = {
+        param: ev.param,
+        label,
+        options: ev.options,
+        threshold: ev.options.length,
+        bitsNeeded: Math.max(1, Math.ceil(Math.log2(ev.options.length))),
+        attemptIndex: 0,
+        bitsSoFar: [],
+        drawEl: null,
+      };
+      startParamAttempt(activeParamPick);
+      break;
+    }
     case "spin_face_picked": {
       pickingFace = false;
       // The picked face needs to show up where you're actually looking,
@@ -433,7 +549,13 @@ function renderEvent(ev) {
       break;
     }
     case "spin_method_picked":
-      // already covered by the "Mixing the two photos" status set above; log row is enough here.
+      // Reroll's own three spin_param_pick_start events carry the visible
+      // weight for that case — nothing extra needed here. Reblend skips
+      // all three, and silence there would just look like nothing
+      // happened; state the skip as the fact it is.
+      if (ev.method === "reblend") {
+        addPlainLadderLine("No new picks. Same settings, fed back in.");
+      }
       break;
     case "spin_mask_ready":
       // docs/mask-tasks M3.1-M3.3: the mask fills the 7s wait instead of dead air.

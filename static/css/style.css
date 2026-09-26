@@ -202,6 +202,11 @@ button:disabled{opacity:.4;cursor:default}
 #poll-line{font-size:11.5px;color:var(--slate)}
 #clock-line{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--steel)}
 
+/* Same explicit-height reasoning as #log below — the ladder now grows with
+   every flip a spin makes (face pick, method pick, and on reroll three more
+   param picks), unbounded, and this is the thing that was actually pushing
+   the stage down the page (26-09-2026), not the Atlas log. */
+.scrollbox{max-height:420px;overflow-y:auto}
 .draw{margin-bottom:9px}
 .draw .dlab{font-size:11.5px;color:var(--slate);margin-bottom:4px}
 .rung{display:grid;grid-template-columns:44px 46px 20px 1fr;gap:8px;align-items:center;
@@ -219,8 +224,15 @@ button:disabled{opacity:.4;cursor:default}
 .dsum .bits{font-family:"JetBrains Mono",monospace;letter-spacing:.28em;font-weight:500}
 .dsum .good{background:linear-gradient(transparent 58%,var(--signal) 58%);font-weight:600}
 
-.logcard{flex:1;min-height:150px;display:flex;flex-direction:column}
-#log{background:var(--ink);border-radius:6px;padding:9px 10px;flex:1;overflow:auto;
+/* Explicit max-height, not flex:1 stretching to match a sibling column's
+   natural size — that only works when an ancestor has a *definite* height
+   to hand down, which .app no longer does now the whole page scrolls as
+   one (Bogdan's call, 26-09-2026). Without a definite height, flex:1 falls
+   back to content size — i.e. #log just grew to fit every row ever
+   logged, pushing the stage further down the page with every flip.
+   ~25 rows at this font/line-height/padding — Bogdan's own number. */
+.logcard{flex:none;min-height:150px;display:flex;flex-direction:column}
+#log{background:var(--ink);border-radius:6px;padding:9px 10px;max-height:480px;overflow-y:auto;
   font-family:"JetBrains Mono",monospace;font-size:10px;line-height:1.65;color:#d8d8d8}
 #log .l{display:grid;grid-template-columns:52px 104px 1fr;gap:8px;padding:1px 0}
 #log .t{color:#7a7a7a}

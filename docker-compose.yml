@@ -9,3 +9,16 @@ services:
       - "127.0.0.1:5406:5001"
     volumes:
       - ./state:/app/state
+      # Persists rembg's downloaded model across redeploys/recreates —
+      # was landing in the container's writable layer before, wiped on
+      # every `docker compose up -d` that changed the image, so every
+      # fresh deploy re-triggered a fresh download on the first mask call.
+      - ./.rembg-cache:/root/.rembg
+    # Scopes any future memory blowup to this container's own cgroup
+    # instead of a box-wide kernel OOM kill — confirmed live tonight
+    # (26-09-2026) that this process hit ~6.8GB RSS and the kernel OOM
+    # killer took it out with no container-level limit in place at all,
+    # which put every other service on this shared box at risk too, not
+    # just this one. 2g is generous headroom over the u2netp-based
+    # footprint (mask.py), not a tight squeeze.
+    mem_limit: 2g

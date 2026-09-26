@@ -187,6 +187,7 @@ def _run_spin_inner(spin_id: str):
     # already seeded onto every face's version-1 entry. This also means a
     # floor-step and a version always happen together, 1:1 — no separate
     # fix needed for that.
+    atlas.log_event({"type": "spin_method_pick_start", "spin_id": spin_id, "face": face})
     method = "reblend" if quantum.quantum_bit() == 1 else "reroll"
     atlas.log_event({"type": "spin_method_picked", "spin_id": spin_id, "face": face, "method": method})
 
@@ -203,8 +204,11 @@ def _run_spin_inner(spin_id: str):
     next_v = len(versions.load_versions().get(str(face), [])) + 1
 
     if method == "reroll":
+        atlas.log_event({"type": "spin_param_pick_start", "spin_id": spin_id, "face": face, "param": "radius", "options": RADII})
         radius = quantum.quantum_choice(RADII, log=bit_log)
+        atlas.log_event({"type": "spin_param_pick_start", "spin_id": spin_id, "face": face, "param": "strength", "options": STRENGTHS})
         strength = quantum.quantum_choice(STRENGTHS, log=bit_log)
+        atlas.log_event({"type": "spin_param_pick_start", "spin_id": spin_id, "face": face, "param": "direction", "options": DIRECTIONS})
         direction = quantum.quantum_choice(DIRECTIONS, log=bit_log)
         alpha = mask.segment_person(subject_path)
         gradient = mask.make_mask(alpha, radius=radius, floor=new_floor)
