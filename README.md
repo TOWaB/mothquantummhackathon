@@ -6,8 +6,7 @@
 A twelve-sided solid, each side two concert photographs mixed into each other by
 a real call to Moth's Atlas API. Press the button and a quantum coin toss
 decides which side changes and how. Whatever a visitor makes stays for
-whoever comes next, unless someone presses Start Again, which returns every
-side to the twelve original prints.
+whoever comes next.
 
 ---
 
@@ -79,6 +78,10 @@ flask --app app run --port 5001
 The API key stays server-side; the browser only ever talks to this Flask app,
 which proxies to Atlas and streams live events back over SSE at `/stream`.
 
+The live deploy runs the same app via `Dockerfile`/`docker-compose.yml`
+instead (behind Caddy, on its own box) — same entry point, same env var,
+just containerized.
+
 ## Repo layout
 
 | Path | What |
@@ -97,3 +100,10 @@ right.
 
 Photographs: Petrică and Cristina Tănase, George Enescu International
 Festival, Bucharest, 2023. Built by TheOneWithABeard for Moth Hack 2026.
+
+## License
+
+MIT, with the [Commons Clause](https://commonsclause.com/) — see
+[LICENSE](LICENSE). Free to use, study, run, modify and share for
+non-commercial purposes; this is an art installation, not to be sold or
+resold as a product or hosted service.
