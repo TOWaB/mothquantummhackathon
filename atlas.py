@@ -154,7 +154,14 @@ def submit_job(engine: str, params: dict, input_files: dict | None = None) -> st
     return job_id
 
 
-def wait_for_job(job_id: str, poll_interval=2.0, engine: str | None = None):
+def wait_for_job(job_id: str, poll_interval=1.0, engine: str | None = None):
+    # Was 2.0 — a real coin-toss-v1 job finishes in ~3.7-4.1s, telablur-v1 in
+    # ~7s (measured directly tonight), so a poll only lands on "completed"
+    # at the next multiple of poll_interval after that: up to ~2s of pure
+    # waiting per flip beyond when the job was actually done. A spin makes
+    # 7-15+ real flips, so that adds up to real, felt wait — 1.0s halves the
+    # worst case for one extra status-check request per flip, nothing else
+    # about the job or its timing changes.
     t0 = time.time()
     while True:
         st = requests.get(f"{API_BASE}/jobs/{job_id}/status", headers=H, timeout=HTTP_TIMEOUT).json()
