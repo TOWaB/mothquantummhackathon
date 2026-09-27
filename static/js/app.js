@@ -70,10 +70,17 @@ function photographer(filename) {
   return null;
 }
 
-function creditLine(face) {
+function creditLine(face, method) {
   const photos = latestState && latestState.face_photos && latestState.face_photos[face];
   if (!photos) return "";
   const a = photographer(photos.subject);
+  // v1/original is one person's solo photo, nothing blended in yet — credit
+  // the one photographer actually in it, not the other side's photographer
+  // too. Every other version is the whole point: two people entangled in
+  // one picture, credit both.
+  if (method === "original") {
+    return a ? `${a} · George Enescu International Festival, 2023` : "";
+  }
   const b = photographer(photos.opposite);
   const names = a && b && a !== b
     ? "Petrică Tănase and Cristina Tănase"
@@ -336,7 +343,7 @@ function renderFacePanel(face, versionEntry, versionList) {
   els.facesub.textContent = METHOD[v.method] || v.method;
   els.faceimg.src = `/static/faces/${v.file}`;
   els.faceimg.alt = `Side ${face}, version ${v.v}`;
-  if (els.facecredit) els.facecredit.textContent = creditLine(face);
+  if (els.facecredit) els.facecredit.textContent = creditLine(face, v.method);
 
   // M3.5: past versions can show the mask that made them, on demand — a
   // toggle, not a second permanent image, since #faceimg only ever holds
