@@ -134,8 +134,17 @@ button:disabled{opacity:.4;cursor:default}
    dodeca.js builds #solid and all 12 .pface/.pclip nodes at runtime — this
    file only styles them, never creates them. */
 #stage{background:var(--ink);border-radius:10px;position:relative;overflow:hidden;
-  display:grid;place-items:center;perspective:720px;flex:1;min-height:320px;
+  display:grid;place-items:center;flex:1;min-height:320px;
   touch-action:none;user-select:none;cursor:grab}
+/* dodeca.js is constructed on #stageInner, not #stage, purely so a fullscreen
+   zoom has somewhere safe to put a plain 2D scale: transform without ever
+   touching .pface/solid's own inline matrix3d (dodeca.js overwrites that every
+   frame regardless of what a stylesheet says, so scaling solid itself here
+   would just get clobbered on the next drag/frame). perspective moves here
+   too — it has to live on solid's direct parent to keep the 3D context. */
+#stageInner{width:100%;height:100%;display:grid;place-items:center;
+  perspective:720px;transform-origin:center center}
+#stage:fullscreen{background:var(--ink)}
 .pface{position:absolute;inset:0;backface-visibility:hidden}
 .pclip{position:absolute;inset:0;
   clip-path:polygon(50% 0%,97.55% 34.55%,79.39% 90.45%,20.61% 90.45%,2.45% 34.55%);

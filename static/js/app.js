@@ -10,6 +10,9 @@
 // line has run throws a real ReferenceError (not just "undefined") — this
 // crashed the whole script on load until reordered. See LEARNINGS.md.
 const els = {
+  stage: document.getElementById("stage"),
+  stageInner: document.getElementById("stageInner"),
+  fullscreenBtn: document.getElementById("fullscreenBtn"),
   autoSpinBtn: document.getElementById("autoSpinBtn"),
   spinBtn: document.getElementById("spinBtn"),
   stageLine: document.getElementById("stage-line"),
@@ -105,11 +108,39 @@ let currentDrawBits = []; // this draw's bits so far, to detect a live "thrown a
 const floorFills = {};
 const floorCells = {};
 
-const dodeca = Dodeca(document.getElementById("stage"), {
-  size: 190,
+const DODECA_SIZE = 190;
+const dodeca = Dodeca(els.stageInner, {
+  size: DODECA_SIZE,
   onFace: n => onFaceSelected(n),
 });
 console.assert(dodeca.checkGeometry().ok, "dodecahedron does not close");
+
+/* ---- full screen -------------------------------------------------------
+   Scales #stageInner, never .pface/solid — dodeca.js sets solid's own
+   inline transform every frame regardless of what CSS says, so any scale
+   applied directly to solid would just get overwritten on the next drag or
+   auto-spin tick. #stageInner carries no 3D transform of its own, so a
+   plain 2D scale on it composes fine with the 3D scene inside. */
+function applyFullscreenScale() {
+  if (document.fullscreenElement !== els.stage) return;
+  const avail = Math.min(els.stage.clientWidth, els.stage.clientHeight);
+  const scale = Math.max(1, (avail * 0.82) / DODECA_SIZE);
+  els.stageInner.style.transform = `scale(${scale})`;
+}
+function updateFullscreenBtn() {
+  els.fullscreenBtn.textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
+}
+els.fullscreenBtn.addEventListener("click", () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else els.stage.requestFullscreen().catch(() => {});
+});
+document.addEventListener("fullscreenchange", () => {
+  updateFullscreenBtn();
+  if (document.fullscreenElement) applyFullscreenScale();
+  else els.stageInner.style.transform = "";
+});
+window.addEventListener("resize", () => { if (document.fullscreenElement) applyFullscreenScale(); });
+updateFullscreenBtn();
 
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString("en-GB", { hour12: false });
