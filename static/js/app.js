@@ -12,6 +12,7 @@
 const els = {
   stage: document.getElementById("stage"),
   stageInner: document.getElementById("stageInner"),
+  stageScale: document.getElementById("stageScale"),
   fullscreenBtn: document.getElementById("fullscreenBtn"),
   autoSpinBtn: document.getElementById("autoSpinBtn"),
   spinBtn: document.getElementById("spinBtn"),
@@ -109,23 +110,38 @@ const floorFills = {};
 const floorCells = {};
 
 const DODECA_SIZE = 190;
-const dodeca = Dodeca(els.stageInner, {
+const dodeca = Dodeca(els.stageScale, {
   size: DODECA_SIZE,
   onFace: n => onFaceSelected(n),
 });
 console.assert(dodeca.checkGeometry().ok, "dodecahedron does not close");
 
 /* ---- full screen -------------------------------------------------------
-   Scales #stageInner, never .pface/solid — dodeca.js sets solid's own
-   inline transform every frame regardless of what CSS says, so any scale
-   applied directly to solid would just get overwritten on the next drag or
-   auto-spin tick. #stageInner carries no 3D transform of its own, so a
-   plain 2D scale on it composes fine with the 3D scene inside. */
+   Scales #stageScale (a DODECA_SIZE-square box), never #stageInner (which
+   is deliberately 100%/100% of #stage so it can center #stageScale in the
+   normal, non-fullscreen layout too) and never .pface/solid directly —
+   dodeca.js sets solid's own inline transform every frame regardless of
+   what CSS says, so a scale applied straight to solid would just get
+   overwritten on the next drag or auto-spin tick. Scaling a box that's
+   already the full size of a fullscreen parent guarantees overflow on
+   every side no matter the factor — confirmed live, 27-09-2026 — which is
+   why this must target the shape-sized box, not the centering one.
+
+   DODECA_SIZE (190) is NOT the solid's own rendered footprint, though —
+   it's the flat per-face box dodeca.js builds from; the assembled 3D
+   solid, projected through `perspective:720px`, measures ~355-376px
+   across in a real render (measured directly via the union of every
+   .pface's getBoundingClientRect(), sampled across several rotations —
+   not derived from the dodecahedron's geometric circumradius, which
+   undershoots what perspective actually renders). Dividing by DODECA_SIZE
+   here was the original bug: it left the shape ~2x too big regardless of
+   the 0.82 fill fraction, cut off on every real screen tested. */
+const DODECA_RENDERED_FOOTPRINT = 380; // measured max sample + margin
 function applyFullscreenScale() {
   if (document.fullscreenElement !== els.stage) return;
   const avail = Math.min(els.stage.clientWidth, els.stage.clientHeight);
-  const scale = Math.max(1, (avail * 0.82) / DODECA_SIZE);
-  els.stageInner.style.transform = `scale(${scale})`;
+  const scale = Math.max(1, (avail * 0.82) / DODECA_RENDERED_FOOTPRINT);
+  els.stageScale.style.transform = `scale(${scale})`;
 }
 function updateFullscreenBtn() {
   els.fullscreenBtn.textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
@@ -137,7 +153,7 @@ els.fullscreenBtn.addEventListener("click", () => {
 document.addEventListener("fullscreenchange", () => {
   updateFullscreenBtn();
   if (document.fullscreenElement) applyFullscreenScale();
-  else els.stageInner.style.transform = "";
+  else els.stageScale.style.transform = "";
 });
 window.addEventListener("resize", () => { if (document.fullscreenElement) applyFullscreenScale(); });
 updateFullscreenBtn();

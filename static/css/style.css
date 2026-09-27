@@ -136,13 +136,22 @@ button:disabled{opacity:.4;cursor:default}
 #stage{background:var(--ink);border-radius:10px;position:relative;overflow:hidden;
   display:grid;place-items:center;flex:1;min-height:320px;
   touch-action:none;user-select:none;cursor:grab}
-/* dodeca.js is constructed on #stageInner, not #stage, purely so a fullscreen
-   zoom has somewhere safe to put a plain 2D scale: transform without ever
-   touching .pface/solid's own inline matrix3d (dodeca.js overwrites that every
-   frame regardless of what a stylesheet says, so scaling solid itself here
-   would just get clobbered on the next drag/frame). perspective moves here
-   too — it has to live on solid's direct parent to keep the 3D context. */
-#stageInner{width:100%;height:100%;display:grid;place-items:center;
+/* #stageInner only grids/centers — it stays 100%/100% of #stage in both
+   normal and fullscreen layout, same as it always centered #solid directly
+   before this. The fullscreen scale must NOT go here: a scale>1 applied to
+   a box that's already the full size of its (fullscreen) parent guarantees
+   overflow on every side regardless of the factor chosen — confirmed live,
+   27-09-2026, cut off top and bottom on a real screen. #stageScale is the
+   dedicated, shape-sized (not viewport-sized) box the scale actually
+   belongs on: dodeca.js is constructed on IT, not #stageInner, so it's
+   exactly 190px square (matching DODECA_SIZE in app.js) before any
+   fullscreen scale — the scale then correctly enlarges just the shape,
+   not the shape plus a viewport's worth of centering space around it.
+   perspective lives here too, since it has to sit on solid's direct
+   parent to keep the 3D context, and #stageScale (not #stageInner) is
+   that parent now. */
+#stageInner{width:100%;height:100%;display:grid;place-items:center}
+#stageScale{width:190px;height:190px;display:grid;place-items:center;
   perspective:720px;transform-origin:center center}
 #stage:fullscreen{background:var(--ink)}
 .pface{position:absolute;inset:0;backface-visibility:hidden}
