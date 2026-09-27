@@ -356,7 +356,14 @@ function renderFacePanel(face, versionEntry, versionList) {
   }
 
   els.facerows.innerHTML = "";
+  // v1 ("original") is now the plain, unedited photo — no blend ever ran for
+  // it, so the blend-describing rows (everything but First photo) would be
+  // showing the ORIGINAL bake job's leftover manifest metadata as if it
+  // described what's on screen. Hide them rather than show stale/inapplicable
+  // data (Angie, 2026-09-27, routed from Bogdan).
+  const HIDDEN_FOR_ORIGINAL = new Set(["Second photo", "How much mixing", "Which way it mixes", "How wide it spreads", "Job", "Took"]);
   ROWS.forEach(([label, field, get, isCode, getCredit]) => {
+    if (v.method === "original" && HIDDEN_FOR_ORIGINAL.has(label)) return;
     const row = document.createElement("div");
     row.className = "r";
     const value = get(v, face);
@@ -376,7 +383,12 @@ function renderFacePanel(face, versionEntry, versionList) {
   versionList.forEach(entry => {
     const row = document.createElement("div");
     row.className = "vrow" + (entry.v === v.v ? " now" : "");
-    const when = entry.ts ? new Date(entry.ts).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }) : "overnight batch";
+    // No fallback string here on purpose — v1 no longer means "made in a
+    // batch" (it's the plain original photo, no job ran for it), and this
+    // isn't copy to invent unilaterally. Omit the claim rather than guess
+    // new wording; flagged to Bogdan/Clementine if a replacement phrase is
+    // wanted instead of leaving it blank.
+    const when = entry.ts ? new Date(entry.ts).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }) : "";
     row.innerHTML =
       `<span class="vthumb" style="background-image:url('/static/faces/${entry.file}')"></span>` +
       `<span class="vmain"><b>Version ${entry.v}, ${entry.method}</b><em>${entry.job_id.slice(0, 16)}</em></span>` +
