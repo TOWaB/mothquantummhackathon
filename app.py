@@ -110,8 +110,15 @@ def load_faces() -> dict:
             migrate_src = legacy_dest if legacy_dest.exists() else src
             if migrate_src.exists():
                 Image.open(migrate_src).convert("RGB").save(dest, "JPEG", quality=85)
-        elif src.exists() and src.stat().st_mtime > dest.stat().st_mtime:
-            Image.open(src).convert("RGB").save(dest, "JPEG", quality=85)
+        # No more "refresh dest if src is newer" branch here — it used
+        # src's mtime as a proxy for "the bake actually changed," but a
+        # deploy's `git reset --hard` rewrites every tracked file's mtime
+        # to the deploy time regardless of whether its content changed at
+        # all. That silently overwrote already-spun faces back to their
+        # pristine original on the very next page load after any deploy —
+        # confirmed live, 27-09-2026 (two real visitor spins reverted this
+        # way). Once dest exists, it's live visitor state; nothing here
+        # should ever overwrite it again on its own initiative.
         # version 1 is always the baked original and never changes — keep a
         # permanent _v1 copy so the version list can load it like any other
         # version, the same as reroll/reblend get face{NN}_v{N}.jpg.

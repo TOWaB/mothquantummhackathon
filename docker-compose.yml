@@ -9,6 +9,17 @@ services:
       - "127.0.0.1:5406:5001"
     volumes:
       - ./state:/app/state
+      # Every real visitor spin writes its result image here (run_spin's
+      # Image.save calls) — without this mount, those writes only ever
+      # landed in THIS container's own writable layer, invisible to the
+      # host, and were destroyed outright on every deploy's container
+      # recreate, no matter what the deploy script did to the host's copy
+      # of this directory (confirmed live, 27-09-2026: two real spins'
+      # images gone with no trace, one server-mtime-bug theory ruled out
+      # before finding this). Mounting it makes the host directory the
+      # actual live backing store, same as state/ already is, so a
+      # container recreate can no longer lose anything written to it.
+      - ./static/faces:/app/static/faces
       # Persists rembg's downloaded model across redeploys/recreates —
       # was landing in the container's writable layer before, wiped on
       # every `docker compose up -d` that changed the image, so every
