@@ -677,12 +677,29 @@ async function hydrate() {
   // No dodeca.home() here — that would call snapTo, which stops autoSpin,
   // contradicting "start with the light spin" (item 4). Whatever face
   // naturally fronted at construction (frontFace) is what we show.
+  // The dodecahedron texture and the initial "Facing you" panel both use
+  // each face's CURRENT pointer (faceNN.jpg), not the latest version's own
+  // historical filename — the pointer always exists and always reflects
+  // what's actually being served (that's its whole job), while a specific
+  // numbered version file is a point-in-time snapshot that, before
+  // static/faces/ was volume-mounted (27-09-2026), could be lost outright
+  // on a deploy with no way back. Confirmed live: eight faces' latest
+  // version files 404'd after that exact loss, even though every face's
+  // current pointer stayed valid throughout — the dodecahedron doesn't
+  // need to care which numbered version is "current," only that whatever
+  // it shows is real. Clicking an OLDER version row still requests that
+  // version's own file directly (renderFacePanel below, on click) — if
+  // that specific historical file is gone, it should show as gone, not
+  // be quietly substituted.
   const versionList = latestState.versions[String(frontFace)] || [];
-  if (versionList.length) renderFacePanel(frontFace, versionList[versionList.length - 1], versionList);
-  else renderEmptyFacePanel();
+  if (versionList.length) {
+    const lastEntry = versionList[versionList.length - 1];
+    const currentFile = `face${String(frontFace).padStart(2, "0")}.jpg`;
+    renderFacePanel(frontFace, { ...lastEntry, file: currentFile }, versionList);
+  } else renderEmptyFacePanel();
   Object.keys(latestState.versions).forEach(n => {
     const list = latestState.versions[n];
-    if (list.length) dodeca.setFaceImage(parseInt(n, 10), `/static/faces/${list[list.length - 1].file}`);
+    if (list.length) dodeca.setFaceImage(parseInt(n, 10), `/static/faces/face${String(n).padStart(2, "0")}.jpg`);
   });
 
   // M5: seed the floor strip from each face's latest known floor — no new
