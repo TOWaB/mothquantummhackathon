@@ -387,7 +387,7 @@ function renderFacePanel(face, versionEntry, versionList) {
   });
 
   els.vlist.innerHTML = "";
-  versionList.forEach(entry => {
+  [...versionList].reverse().forEach(entry => {
     const row = document.createElement("div");
     row.className = "vrow" + (entry.v === v.v ? " now" : "");
     // No fallback string here on purpose — v1 no longer means "made in a
