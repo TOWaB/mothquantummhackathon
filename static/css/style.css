@@ -112,6 +112,17 @@ button:disabled{opacity:.4;cursor:default}
 /* Full page scroll now (see .app), so the middle column just flows with
    its natural content height — no internal scrollbar of its own. */
 #facingCard{flex:1}
+/* CSS grid's own default (align-items:stretch) was stretching EVERY column
+   to match the row's height — i.e. whichever column has the most content
+   (the version list, the Atlas log) forces the other two to match it. That
+   made the stage's black box grow to match that height too, with the
+   dodecahedron centered somewhere near its top and a huge empty black
+   area below — confirmed live, 27-09-2026 ("not tie the box to the
+   bottom"). align-self:start opts the stage's own column out of that
+   stretch: it keeps its own natural height (its content: #stage's own
+   min-height plus the floor strip) regardless of how tall the other two
+   columns get. */
+.main > .col:first-child{align-self:start}
 @media(max-width:1180px){
   .main{grid-template-columns:minmax(0,1.2fr) minmax(260px,1fr)}
   .colC{grid-column:1 / -1}}
